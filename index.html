@@ -46,8 +46,54 @@
     </main>
     <!-- /container -->
 
+    <!-- Модальное окно для добовления товара -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Добавление нового товара</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="addProductForm" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="productName">Название</label>
+                            <input type="text" class="form-control" id="productName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productDescription">Описание</label>
+                            <textarea class="form-control" id="productDescription" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="productPrice">Цена</label>
+                            <input type="number" class="form-control" id="productPrice" name="price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productPhoto">Фотография товара</label>
+                            <input type="file" class="form-control-file" id="productPhoto" name="path_photo">
+                        </div>
+                        <div class="form-group">
+                            <label for="productCategory">Категория</label>
+                            <select class="form-control" id="productCategory" name="category_id">
+                                <option value="1">Категория 1</option>
+                                <option value="2">Категория 2</option>
+                                <!-- Добавьте дополнительные категории здесь -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Добавить товар</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Модальное окно для добовления товара -->
+
     <!-- Модальное окно для редактирования товара -->
-    <!-- Вставьте здесь HTML-код модального окна -->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -79,6 +125,7 @@
         </div>
       </div>
     </div>
+    <!-- Модальное окно для редактирования товара -->
     
     
     <!-- jQuery & Bootstrap 4 JavaScript libraries -->
@@ -322,8 +369,8 @@
                     getProducts(function(products) {
                         if (products) {
                             // Переменная для хранения HTML-кода всех карточек товаров
-                            var html = '<div class="row">';
-                    
+                            var html = '<div class="row"><div class="col-12 mb-3"><button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button></div>';
+                            
                             // Перебор массива товаров и создание HTML-кода для каждого товара
                             products.forEach(function(product) {
                                 html += `
@@ -477,8 +524,38 @@
             });
         });
         
+     //------------------------------------------------------------------------------------------------------------------------------------------
+        $('body').on('click', '#addProductBtn', function() {
+            // Очистка формы перед открытием модального окна
+            $('#addProductForm')[0].reset();
+            // Открытие модального окна
+            $('#addProductModal').modal('show');
+        });
+            
+        $('#addProductForm').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
         
+            $.ajax({
+                url: 'api/create_product.php', // Путь к скрипту создания товара
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    // Обработка успешного добавления товара
+                    $('#addProductModal').modal('hide'); // Закрытие модального окна
+                    // Обновление списка товаров на странице
+                },
+                error: function(xhr, status, error) {
+                    // Обработка ошибок при отправке данных
+                    console.error("Ошибка добавления товара: ", error);
+                }
+            });
+        });
         
+     //------------------------------------------------------------------------------------------------------------------------------------------
         //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
  
         //<---------------------------------------------------------------------------------------Korzina Page--------------------------------------------------------------------------------------->
