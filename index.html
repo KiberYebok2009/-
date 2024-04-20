@@ -63,15 +63,11 @@
               <input type="hidden" id="editProductId" name="id">
               <div class="form-group">
                 <label for="editProductName">Название</label>
-                <input type="text" class="form-control" id="editProductName" name="name" required>
-              </div>
-              <div class="form-group">
-                <label for="editProductDescription">Описание</label>
-                <textarea class="form-control" id="editProductDescription" name="description" required></textarea>
+                <input type="text" class="form-control" id="editProductName" placeholder="" name="name" required>
               </div>
               <div class="form-group">
                 <label for="editProductPrice">Цена</label>
-                <input type="text" class="form-control" id="editProductPrice" name="price" required>
+                <input type="text" class="form-control" id="editProductPrice" placeholder="" name="price" required>
               </div>
               <!-- Добавьте другие поля по необходимости -->
             </div>
@@ -410,7 +406,6 @@
                 url: 'api/get_products.php',
                 type: 'GET',
                 success: function(response) {
-                    console.log(response); // Для отладки-------------------------------------------------------------убрать
                     // Проверка, что ответ является массивом
                     if (Array.isArray(response)) {
                         // Если ответ - массив, передаем его в callback
@@ -428,47 +423,55 @@
                 
         // Функция для открытия модального окна редактирования товара и заполнения его данными
         function editProductModal(productId) {
-            // Здесь должен быть AJAX-запрос к API для получения данных о товаре по его ID
-            // Для примера заполним форму фиктивными данными
-            var productData = {
-                id: productId,
-                name: "Product Name",
-                description: "Product Description",
-                price: "100"
-            };
-            
-            // Заполнение формы данными о товаре
-            $('#editProductId').val(productData.id);
-            $('#editProductName').val(productData.name);
-            $('#editProductDescription').val(productData.description);
-            $('#editProductPrice').val(productData.price);
-            
-            // Открытие модального окна
-            $('#editProductModal').modal('show');
+            $.ajax({
+                url: 'api/get_product.php', // Путь к вашему скрипту, который возвращает данные о товаре
+                type: 'GET',
+                dataType: 'json', // Указываем, что ожидаем ответ в формате JSON
+                data: { id: productId },
+                success: function(productData) {
+                    // Установка значений placeholder данными о товаре
+                    $('#editProductName').attr('placeholder', productData.name);
+                    $('#editProductPrice').attr('placeholder', productData.price);
+                    
+                    // Также установите фактические значения, если хотите, чтобы поля были заполнены
+                    $('#editProductId').val(productId);
+                    $('#editProductName').val(productData.name);
+                    $('#editProductPrice').val(productData.price);
+                    
+                    // Открытие модального окна
+                    $('#editProductModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    // Обработка ошибок
+                    console.error("Ошибка получения данных о товаре: ", error);
+                }
+            });
         }
         // Обработчик нажатия на кнопку редактирования товара
         $(document).on('click', '.edit-product-btn', function() {
             var productId = $(this).data('product-id');
             editProductModal(productId); // Вызов функции для редактирования товара
         });
+        
         $('#editProductForm').submit(function(e) {
-            e.preventDefault();
-            var formData = $(this).serialize(); // Собираем данные формы
+            e.preventDefault(); // Предотвращаем стандартное поведение формы
     
-            // Отправляем AJAX-запрос для обновления товара
+            var formData = $(this).serialize(); // Сериализуем данные формы
+
+            // Отправляем данные на сервер через AJAX
             $.ajax({
-                url: 'api/update_product.php', // Путь к вашему скрипту обновления товара
+                url: 'api/update_product.php', // Укажите здесь правильный путь к вашему скрипту обновления продукта
                 type: 'POST',
+                dataType: 'json',
                 data: formData,
                 success: function(response) {
-                    // Обработка успешного обновления
-                    $('#editProductModal').modal('hide');
-                    // Обновление отображения товара на странице
-                    showHomePage();
+                    // Здесь вы можете обработать ответ от сервера после обновления продукта
+                    $('#editProductModal').modal('hide'); // Закрываем модальное окно
+                    // Здесь может быть код для обновления данных на странице
                 },
                 error: function(xhr, status, error) {
-                    // Обработка ошибок
-                    console.error("Ошибка обновления: ", error);
+                    // Обработка ошибок при отправке данных
+                    console.error("Ошибка обновления продукта: ", error);
                 }
             });
         });
