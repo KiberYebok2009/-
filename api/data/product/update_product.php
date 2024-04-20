@@ -1,7 +1,7 @@
 <?php
     // Подключение к базе данных и другие необходимые файлы
-    include_once 'config/database_skins.php';
-    include_once 'objects/product.php';
+    include_once '../../config/database_skins.php';
+    include_once '../../objects/product.php';
     
     // Получение подключения к базе данных
     $database = new Database();

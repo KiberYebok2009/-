@@ -8,8 +8,8 @@
     
     // database connection will be here
     // files needed to connect to database
-    include_once 'config/database.php';
-    include_once 'objects/user.php';
+    include_once '../../config/database.php';
+    include_once '../../objects/user.php';
     
     // get database connection
     $database = new Database();

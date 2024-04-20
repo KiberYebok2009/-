@@ -134,7 +134,7 @@
             var form_data=JSON.stringify(sign_up_form.serializeObject());
             // submit form data to api
             $.ajax({
-                url: "api/create_user.php",
+                url: "api/data/user/create_user.php",
                 type : "POST",
                 contentType : 'application/json',
                 data : form_data,
@@ -166,7 +166,7 @@
         
             // отправить данные формы на сервер
             $.ajax({
-                url: "api/login.php",
+                url: "api/data/user/login.php",
                 type : "POST",
                 contentType : 'application/json',
                 data : JSON.stringify(form_data),
@@ -241,6 +241,7 @@
                         $('#response').html("<div class='alert alert-success'>Account was updated.</div>");
                     },
                     error: function(xhr, resp, text){
+                        console.log(resp, text);
                         // Уведомление пользователя об ошибке
                         $('#response').html("<div class='alert alert-danger'>Unable to update account. Please contact support.</div>");
                     }
@@ -312,7 +313,7 @@
         function showHomePage() {
             // validate jwt to verify access
             var jwt = getCookie('jwt');
-            $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+            $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                 // if valid, show custom content based on user role
                 var user = result.data; // предполагаем, что результат содержит данные пользователя
                 
@@ -403,7 +404,7 @@
            // Функция для получения товаров
         function getProducts(callback) {
              $.ajax({
-                url: 'api/get_products.php',
+                url: 'api/data/product/get_products.php',
                 type: 'GET',
                 success: function(response) {
                     // Проверка, что ответ является массивом
@@ -424,7 +425,7 @@
         // Функция для открытия модального окна редактирования товара и заполнения его данными
         function editProductModal(productId) {
             $.ajax({
-                url: 'api/get_product.php', // Путь к вашему скрипту, который возвращает данные о товаре
+                url: 'api/data/product/get_product.php', // Путь к вашему скрипту, который возвращает данные о товаре
                 type: 'GET',
                 dataType: 'json', // Указываем, что ожидаем ответ в формате JSON
                 data: { id: productId },
@@ -460,7 +461,7 @@
 
             // Отправляем данные на сервер через AJAX
             $.ajax({
-                url: 'api/update_product.php', // Укажите здесь правильный путь к вашему скрипту обновления продукта
+                url: 'api/data/product/update_product.php', // Укажите здесь правильный путь к вашему скрипту обновления продукта
                 type: 'POST',
                 dataType: 'json',
                 data: formData,
@@ -485,7 +486,7 @@
         function showkorzinaPage() {
             // validate jwt to verify access
             var jwt = getCookie('jwt');
-            $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+            $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                 // if valid, show custom content based on user role
                 var user = result.data; // предполагаем, что результат содержит данные пользователя
                 var html = '';
@@ -549,7 +550,7 @@
         function showUpdateAccountForm(){
             // validate jwt to verify access
             var jwt = getCookie('jwt');
-            $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+            $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                 // if response is valid, put user details in the form
                 var html = `
                     <h2>Update Account</h2>

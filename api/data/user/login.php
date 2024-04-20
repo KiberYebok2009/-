@@ -7,8 +7,8 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     
     // database connection will be here
-    include_once 'config/database.php';
-    include_once 'objects/user.php';
+    include_once '../../config/database.php';
+    include_once '../../objects/user.php';
     
     // get database connection
     $database = new Database();
@@ -25,12 +25,12 @@
     $email_exists = $user->emailExists();
     
     // files for jwt will be here
-    require "libs/vendor/autoload.php";
-    include_once 'config/core.php';
-    include_once 'libs/vendor/firebase/php-jwt/src/BeforeValidException.php';
-    include_once 'libs/vendor/firebase/php-jwt/src/ExpiredException.php';
-    include_once 'libs/vendor/firebase/php-jwt/src/SignatureInvalidException.php';
-    include_once 'libs/vendor/firebase/php-jwt/src/JWT.php';
+    require "../../libs/vendor/autoload.php";
+    include_once '../../config/core.php';
+    include_once '../../libs/vendor/firebase/php-jwt/src/BeforeValidException.php';
+    include_once '../../libs/vendor/firebase/php-jwt/src/ExpiredException.php';
+    include_once '../../libs/vendor/firebase/php-jwt/src/SignatureInvalidException.php';
+    include_once '../../libs/vendor/firebase/php-jwt/src/JWT.php';
     use Firebase\JWT\JWT;
     
     // check if email exists and if password is correct
