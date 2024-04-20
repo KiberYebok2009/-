@@ -45,12 +45,52 @@
         </div>
     </main>
     <!-- /container -->
+
+    <!-- Модальное окно для редактирования товара -->
+    <!-- Вставьте здесь HTML-код модального окна -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editProductModalLabel">Редактирование товара</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="editProductForm">
+            <div class="modal-body">
+              <!-- Скрытое поле для ID товара -->
+              <input type="hidden" id="editProductId" name="id">
+              <div class="form-group">
+                <label for="editProductName">Название</label>
+                <input type="text" class="form-control" id="editProductName" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="editProductDescription">Описание</label>
+                <textarea class="form-control" id="editProductDescription" name="description" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="editProductPrice">Цена</label>
+                <input type="text" class="form-control" id="editProductPrice" name="price" required>
+              </div>
+              <!-- Добавьте другие поля по необходимости -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
     
     <!-- jQuery & Bootstrap 4 JavaScript libraries -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+    <!-- /jQuery & Bootstrap 4 JavaScript libraries -->
+  
     <script>
     // jQuery codes
     $(document).ready(function(){
@@ -270,6 +310,7 @@
             $("#login, #cherta , #sign_up").hide();
             $("#logout, #profile_photo").show();
         }
+ 
         //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
         // show home page
         function showHomePage() {
@@ -278,31 +319,83 @@
             $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                 // if valid, show custom content based on user role
                 var user = result.data; // предполагаем, что результат содержит данные пользователя
-                var html = '';
-        
+                
                 if(user.role == 'admin') {
-                    html = `
-                        <div class="card">
-                            <div class="card-header">${user.role} Dashboard</div>
-                            <div class="card-body">
-                                <h5 class="card-title">Welcome, ${user.firstname}!</h5>
-                                <p class="card-text">You have full access to the ${user.role} features.</p>
-                            </div>
-                        </div>
-                    `;
-                } else if(user.role == 'user') {
-                    html = `
-                        <div class="card">
-                            <div class="card-header">${user.role} Dashboard</div>
-                            <div class="card-body">
-                                <h5 class="card-title">Welcome, ${user.firstname}!</h5>
-                                <p class="card-text">You can view your ${user.role} profile and settings.</p>
-                            </div>
-                        </div>
-                    `;
+                    // Получение списка товаров и отображение их на странице
+                    getProducts(function(products) {
+                        if (products) {
+                            // Переменная для хранения HTML-кода всех карточек товаров
+                            var html = '<div class="row">';
+                    
+                            // Перебор массива товаров и создание HTML-кода для каждого товара
+                            products.forEach(function(product) {
+                                html += `
+                                    <div class="col-md-4">
+                                        <div class="card mb-4 shadow-sm">
+                                            <img src="${product.path_photo}" class="card-img-top" alt="${product.name}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${product.name}</h5>
+                                                <p class="card-text">${product.description}</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary view-product-btn" data-product-id="${product.id}">View</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${product.id}">Edit</button>
+                                                    </div>
+                                                    <small class="text-muted">${product.price}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                    
+                            // Закрытие сетки карточек
+                            html += '</div>';
+                    
+                            // Вставка HTML-кода на страницу
+                            $('#content').html(html);
+                        } else {
+                            console.error("Ошибка: продукты не были получены.");
+                        }
+                    });
+                }  else if(user.role == 'user'){
+                     getProducts(function(products) {
+                        if (products) {
+                            // Переменная для хранения HTML-кода всех карточек товаров
+                            var html = '<div class="row">';
+                    
+                            // Перебор массива товаров и создание HTML-кода для каждого товара
+                            products.forEach(function(product) {
+                                html += `
+                                    <div class="col-md-4">
+                                        <div class="card mb-4 shadow-sm">
+                                            <img src="${product.path_photo}" class="card-img-top" alt="${product.name}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${product.name}</h5>
+                                                <p class="card-text">${product.description}</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary view-product-btn" data-product-id="${product.id}">View</button>
+                                                    </div>
+                                                    <small class="text-muted">${product.price}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                    
+                            // Закрытие сетки карточек
+                            html += '</div>';
+                    
+                            // Вставка HTML-кода на страницу
+                            $('#content').html(html);
+                        } else {
+                            console.error("Ошибка: продукты не были получены.");
+                        }
+                    });
                 }
-        
-                $('#content').html(html);
+                
                 showLoggedInMenu();
             })
             // show login page on error
@@ -311,36 +404,127 @@
                 $('#response').html("<div class='alert alert-danger'>Please login to access the home page.</div>");
             });
         }
+           // Функция для получения товаров
+        function getProducts(callback) {
+             $.ajax({
+                url: 'api/get_products.php',
+                type: 'GET',
+                success: function(response) {
+                    console.log(response); // Для отладки-------------------------------------------------------------убрать
+                    // Проверка, что ответ является массивом
+                    if (Array.isArray(response)) {
+                        // Если ответ - массив, передаем его в callback
+                        callback(response);
+                    } else {
+                        // Если ответ не массив, выводим ошибку
+                        console.error("Ошибка: ожидаемые данные не найдены в ответе сервера.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Ошибка получения списка товаров: ", error);
+                }
+            });
+        }
+                
+        // Функция для открытия модального окна редактирования товара и заполнения его данными
+        function editProductModal(productId) {
+            // Здесь должен быть AJAX-запрос к API для получения данных о товаре по его ID
+            // Для примера заполним форму фиктивными данными
+            var productData = {
+                id: productId,
+                name: "Product Name",
+                description: "Product Description",
+                price: "100"
+            };
+            
+            // Заполнение формы данными о товаре
+            $('#editProductId').val(productData.id);
+            $('#editProductName').val(productData.name);
+            $('#editProductDescription').val(productData.description);
+            $('#editProductPrice').val(productData.price);
+            
+            // Открытие модального окна
+            $('#editProductModal').modal('show');
+        }
+        // Обработчик нажатия на кнопку редактирования товара
+        $(document).on('click', '.edit-product-btn', function() {
+            var productId = $(this).data('product-id');
+            editProductModal(productId); // Вызов функции для редактирования товара
+        });
+        $('#editProductForm').submit(function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize(); // Собираем данные формы
+    
+            // Отправляем AJAX-запрос для обновления товара
+            $.ajax({
+                url: 'api/update_product.php', // Путь к вашему скрипту обновления товара
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Обработка успешного обновления
+                    $('#editProductModal').modal('hide');
+                    // Обновление отображения товара на странице
+                    showHomePage();
+                },
+                error: function(xhr, status, error) {
+                    // Обработка ошибок
+                    console.error("Ошибка обновления: ", error);
+                }
+            });
+        });
+        
+        
+        
         //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
-       
+ 
         //<---------------------------------------------------------------------------------------Korzina Page--------------------------------------------------------------------------------------->
         // show korzina page
         function showkorzinaPage() {
-              // validate jwt to verify access
+            // validate jwt to verify access
             var jwt = getCookie('jwt');
             $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-                // if valid, show homepage
-                var html = `
-                    <div class="card">
-                        <div class="card-header">Welcome to Home!</div>
-                        <div class="card-body">
-                            <h5 class="card-title">You are logged in.</h5>
-                            <p class="card-text">You won't be able to access the home and account pages if you are not logged in.</p>
-                        </div>
-                    </div>
-                    `;
-                $('#content').html(html);
+                // if valid, show custom content based on user role
+                var user = result.data; // предполагаем, что результат содержит данные пользователя
+                var html = '';
+        
+                // Предположим, что у вас есть функция getProducts, которая делает AJAX-запрос к API и возвращает товары
+                getProducts(function(products) {
+                    // Начало сетки карточек
+                    html += '<div class="row">';
+        
+                    // Перебор товаров и создание карточки для каждого
+                    products.forEach(function(product) {
+                        html += `
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${product.name}</h5>
+                                        <p class="card-text">${product.description}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                            </div>
+                                            <small class="text-muted">${product.price}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+        
+                    // Закрытие сетки карточек
+                    html += '</div>';
+        
+                    // Вставка HTML на страницу
+                    $('#content').html(html);
+                });
+        
                 showLoggedInMenu();
-            })
-            // show login page on error
-            .fail(function(result){
-                showLoginPage();
-                $('#response').html("<div class='alert alert-danger'>Please login to access the home page.</div>");
             });
         }
         //<---------------------------------------------------------------------------------------Korzina Page--------------------------------------------------------------------------------------->
-        
-        
         
         
         // get or read cookie

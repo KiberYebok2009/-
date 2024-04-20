@@ -4,6 +4,7 @@ class User{
     // database connection and table name
     private $conn;
     private $table_name = "users";
+    
     // object properties
     public $id;
     public $firstname;
@@ -11,11 +12,12 @@ class User{
     public $email;
     public $password;
     public $rule;
+    
     // constructor
     public function __construct($db){
         $this->conn = $db;
     }
-    // create() method will be here---------------------------------------------------------------------------------
+    
     // create new user record
     public function create(){
         // SQL-запрос для вставки записи
@@ -57,7 +59,7 @@ class User{
     
         return false;
     }   
-    // emailExists() method will be here---------------------------------------------------------------------------------
+    
     // check if given email exist in the database
     function emailExists(){
         // query to check if email exists
@@ -100,7 +102,7 @@ class User{
         // return false if email does not exist in the database
         return false;
     }
-    // update() method will be here---------------------------------------------------------------------------------
+    
     // update a user record
     public function update(){
         // Если пароль предоставлен, обновляем его
