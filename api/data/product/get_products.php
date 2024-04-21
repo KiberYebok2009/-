@@ -10,8 +10,13 @@
     // Создание объекта Product
     $product = new Product($db);
     
-    // Получение списка товаров
-    $products_arr = $product->getProducts(); // Убедитесь, что метод getProducts() возвращает массив продуктов
+    // Получение параметров фильтрации из запроса
+    $minPrice = isset($_GET['minPrice']) ? $_GET['minPrice'] : null;
+    $maxPrice = isset($_GET['maxPrice']) ? $_GET['maxPrice'] : null;
+    $categoryId = isset($_GET['categoryId']) ? $_GET['categoryId'] : null;
+
+    // Получение списка товаров с учетом фильтрации
+    $products_arr = $product->getProducts(null, $minPrice, $maxPrice, $categoryId);
     
     // Установка заголовка Content-Type для ответа
     header('Content-Type: application/json');

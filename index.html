@@ -38,7 +38,7 @@
 
                 <!-- where prompt / messages will appear -->
                 <div id="response"></div>
-                <!-- where main content will appear -->
+                <!-- where main content will appear-->
                 <div id="content"></div>
     </main>
     <!-- /container -->
@@ -297,9 +297,6 @@
                 $('#response').html("<div class='alert alert-info'>You are logged out.</div>");
             });
                     
-            
-        
-        
             // remove any prompt messages
             function clearResponse(){
                 $('#response').html('');
@@ -353,119 +350,113 @@
         
             //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
             // show home page
-            function showHomePage() {
+            function showHomePage(categoryId = '') {
+                console.log(categoryId);
                 // validate jwt to verify access
                 var jwt = getCookie('jwt');
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-                    // if valid, show custom content based on user role
                     var user = result.data; // предполагаем, что результат содержит данные пользователя
-                    
+            
+                    // Форма фильтрации товаров по категории
+                    var filterFormHtml = `
+                        <div id="filter" class="mb-3">
+                            <h4>Фильтр по категории</h4>
+                            <form id="filterForm">
+                                <div class="form-group">
+                                    <select class="form-control" id="categoryId" name="categoryId">
+                                        <option value="">Все категории</option>
+                                        <option value="1">Категория 1</option>
+                                        <option value="2">Категория 2</option>
+                                        <!-- Добавьте другие категории здесь -->
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                            </form>
+                        </div>
+                    `;
+            
+                    // Начинаем формировать HTML для товаров с формы фильтрации
+                    var html = filterFormHtml;
+            
+                    // Добавляем кнопку добавления товара, если пользователь - админ
                     if(user.role == 'admin') {
-                        // Получение списка товаров и отображение их на странице
-                        getProducts(function(products) {
-                            if (products) {
-                                // Переменная для хранения HTML-кода всех карточек товаров
-                                var html = '<div class="row"><div class="col-12 mb-3"><button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button></div>';
-                                
-                                // Перебор массива товаров и создание HTML-кода для каждого товара
-                                products.forEach(function(product) {
-                                    html += `
-                                        <div class="col-md-4">
-                                            <div class="card mb-4 shadow-sm">
-                                                <img src="${product.path_photo}" class="card-img-top" alt="${product.name}">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${product.name}</h5>
-                                                    <p class="card-text">${product.description}</p>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-sm btn-outline-secondary view-product-btn" data-product-id="${product.id}">View</button>
-                                                            <button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${product.id}">Edit</button>
-                                                            <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${product.id}">Delete</button>
-                                                        </div>
-                                                        <small class="text-muted">${product.price}</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
-                                });
-                        
-                                // Закрытие сетки карточек
-                                html += '</div>';
-                        
-                                // Вставка HTML-кода на страницу
-                                $('#content').html(html);
-                            } else {
-                                console.error("Ошибка: продукты не были получены.");
-                            }
-                        });
-                    }  else if(user.role == 'user'){
-                         getProducts(function(products) {
-                            if (products) {
-                                // Переменная для хранения HTML-кода всех карточек товаров
-                                var html = '<div class="row">';
-                        
-                                // Перебор массива товаров и создание HTML-кода для каждого товара
-                                products.forEach(function(product) {
-                                    html += `
-                                        <div class="col-md-4">
-                                            <div class="card mb-4 shadow-sm">
-                                                <img src="${product.path_photo}" class="card-img-top" alt="${product.name}">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${product.name}</h5>
-                                                    <p class="card-text">${product.description}</p>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-sm btn-outline-secondary view-product-btn" data-product-id="${product.id}">View</button>
-                                                        </div>
-                                                        <small class="text-muted">${product.price}</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
-                                });
-                        
-                                // Закрытие сетки карточек
-                                html += '</div>';
-                        
-                                // Вставка HTML-кода на страницу
-                                $('#content').html(html);
-                            } else {
-                                console.error("Ошибка: продукты не были получены.");
-                            }
-                        });
+                        html += '<div class="col-12 mb-3"><button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button></div>';
                     }
-                    
+            
+                    // Получение списка товаров и отображение их на странице
+                    getProducts(function(products) {
+                        if (products && products.length > 0) {
+                            html += '<div class="row">';
+                            // Перебор массива товаров и создание HTML-кода для каждого товара
+                            products.forEach(function(product) {
+                                html += `
+                                    <div class="col-md-4">
+                                        <div class="card mb-4 shadow-sm">
+                                            <img src="${product.path_photo}" class="card-img-top" alt="${product.name}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${product.name}</h5>
+                                                <p class="card-text">${product.description}</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary view-product-btn" data-product-id="${product.id}">View</button>
+                                                        ${user.role == 'admin' ? `
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${product.id}">Edit</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${product.id}">Delete</button>
+                                                        ` : ''}
+                                                    </div>
+                                                    <small class="text-muted">${product.price}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            
+                            html += '</div>'; // Закрытие тега .row
+                        } else {
+                            html += '<p>Товары не найдены.</p>';
+                        }
+                        // Вставка HTML-кода на страницу
+                        $('#content').html(html);
+                    }, categoryId);
+            
                     showLoggedInMenu();
                 })
-                // show login page on error
                 .fail(function(result){
                     showLoginPage();
                     $('#response').html("<div class='alert alert-danger'>Please login to access the home page.</div>");
                 });
             }
-               // Функция для получения товаров
-            function getProducts(callback) {
-                 $.ajax({
-                    url: 'api/data/product/get_products.php',
+            
+            // Функция для получения товаров
+            function getProducts(callback, categoryId = '') {
+                // Подготовка данных для запроса
+                var data = {};
+                if (categoryId) {
+                    data.categoryId = categoryId; // Добавляем categoryId в данные запроса, если он задан
+                }
+            
+                $.ajax({
+                    url: 'api/data/product/get_products.php', // Убедитесь, что адрес верный
                     type: 'GET',
+                    data: data, // Передаем данные в запросе
+                    dataType: 'json',
                     success: function(response) {
-                        // Проверка, что ответ является массивом
-                        if (Array.isArray(response)) {
-                            // Если ответ - массив, передаем его в callback
-                            callback(response);
-                        } else {
-                            // Если ответ не массив, выводим ошибку
-                            console.error("Ошибка: ожидаемые данные не найдены в ответе сервера.");
-                        }
+                        callback(response);
                     },
                     error: function(xhr, status, error) {
                         console.error("Ошибка получения списка товаров: ", error);
                     }
                 });
             }
-                    
+            // Обработчик отправки формы фильтрации
+            $(document).on('submit', '#filterForm', function(e) {
+                e.preventDefault();
+                var selectedCategory = $('#categoryId').val();
+                console.log(selectedCategory);
+                showHomePage(selectedCategory);
+            });
+        
             // Функция для открытия модального окна редактирования товара и заполнения его данными
             function editProductModal(productId) {
                 $.ajax({
@@ -492,6 +483,7 @@
                     }
                 });
             }
+            
             // Обработчик нажатия на кнопку редактирования товара
             $(document).on('click', '.edit-product-btn', function() {
                 var productId = $(this).data('product-id');
@@ -522,6 +514,7 @@
                 });
             });
             
+            // Обработчик нажатия на кнопку добовления товара
             $('body').on('click', '#addProductBtn', function() {
                 // Очистка формы перед открытием модального окна
                 $('#addProductForm')[0].reset();

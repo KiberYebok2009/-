@@ -19,21 +19,48 @@
         }
     
         // Метод для чтения продуктов. Если передан ID, возвращает один продукт.
-        public function getProducts($id = null) {
+        public function getProducts($id = null, $minPrice = null, $maxPrice = null, $categoryId = null) {
+            // Основа запроса
+            $query = "SELECT id, name, description, price, path_photo, category_id FROM " . $this->table_name;
+    
+            // Массив условий для WHERE
+            $conditions = [];
+            $params = [];
+    
+            // Добавление условий в массив
             if ($id) {
-                // Запрос на получение одного продукта по ID
-                $query = "SELECT id, name, description, price, path_photo, category_id FROM " . $this->table_name . " WHERE id = :id LIMIT 0,1";
-            } else {
-                // Запрос на получение всех продуктов
-                $query = "SELECT id, name, description, price, path_photo, category_id FROM " . $this->table_name . " ORDER BY created DESC";
+                $conditions[] = "id = :id";
+                $params[':id'] = $id;
+            }
+            if ($minPrice !== null) {
+                $conditions[] = "price >= :minPrice";
+                $params[':minPrice'] = $minPrice;
+            }
+            if ($maxPrice !== null) {
+                $conditions[] = "price <= :maxPrice";
+                $params[':maxPrice'] = $maxPrice;
+            }
+            if ($categoryId !== null) {
+                $conditions[] = "category_id = :categoryId";
+                $params[':categoryId'] = $categoryId;
+            }
+    
+            // Если есть условия, добавляем их в запрос
+            if (count($conditions) > 0) {
+                $query .= " WHERE " . implode(' AND ', $conditions);
+            }
+    
+            // Добавляем сортировку
+            if (!$id) {
+                $query .= " ORDER BY created DESC";
             }
     
             // Подготовка запроса
             $stmt = $this->conn->prepare($query);
     
-            // Привязка параметра ID, если он был передан
-            if ($id) {
-                $stmt->bindParam(':id', $id);
+            // Привязка параметров
+            foreach ($params as $key => $value) {
+                $stmt->bindParam($key, $value);
             }
     
             // Выполнение запроса
