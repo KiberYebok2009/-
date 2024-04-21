@@ -4,7 +4,7 @@
     --font-size: calc(1vw + 1vw);
 }
 *{
-    cursor:url("../images/emblem_32x32.png"),pointer;
+    cursor:url("../images/artem/emblem_32x32.png"),pointer;
 }
 body{
     margin: 0px;

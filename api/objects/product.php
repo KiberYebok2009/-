@@ -18,7 +18,7 @@
             $this->conn = $db;
         }
     
-            // Метод для чтения продуктов. Если передан ID, возвращает один продукт.
+        // Метод для чтения продуктов. Если передан ID, возвращает один продукт.
         public function getProducts($id = null) {
             if ($id) {
                 // Запрос на получение одного продукта по ID
@@ -99,7 +99,7 @@
             return false;
         }
         
-        // Методы update и delete могут быть реализованы аналогично, включая обработку поля path_photo
+        // Метод для обновления одного продукта по ID
         public function update_product() {
             $query = "UPDATE {$this->table_name}
                       SET
@@ -124,6 +124,26 @@
                 return true;
             }
         
+            return false;
+        }
+        
+        // Метод для удаления одного продукта по ID
+        public function delete() {
+            // Запрос на удаление
+            $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+    
+            // Подготовка запроса
+            $stmt = $this->conn->prepare($query);
+    
+            // Очистка и привязка id продукта
+            $this->id = htmlspecialchars(strip_tags($this->id));
+            $stmt->bindParam(':id', $this->id);
+    
+            // Выполнение запроса
+            if ($stmt->execute()) {
+                return true;
+            }
+    
             return false;
         }
         // Другие методы...
