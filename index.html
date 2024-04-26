@@ -435,7 +435,8 @@
                                 products.forEach(function(product) {
                                     var adminButtons = user.role == 'admin' ? 
                                         `<button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${product.id}">Edit</button>
-                                         <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${product.id}">Delete</button>` : '';
+                                         <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${product.id}">Delete</button>
+                                         ` : '';
                                    
                                     var productHtml = productTemplate
                                         .replace(/%path_photo%/g, product.path_photo)
@@ -687,47 +688,132 @@
                 // validate jwt to verify access
                 var jwt = getCookie('jwt');
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-                    // if valid, show custom content based on user role
-                    var user = result.data; // предполагаем, что результат содержит данные пользователя
+                    var user = result.data;
                     var html = '';
-            
-                    // Предположим, что у вас есть функция getProducts, которая делает AJAX-запрос к API и возвращает товары
-                    getProducts(function(products) {
-                        // Начало сетки карточек
-                        html += '<div class="row">';
-            
-                        // Перебор товаров и создание карточки для каждого
-                        products.forEach(function(product) {
-                            html += `
-                                <div class="col-md-4">
-                                    <div class="card mb-4 shadow-sm">
-                                        <img src="${product.path_photo}" class="card-img-top" alt="${product.name}">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${product.name}</h5>
-                                            <p class="card-text">${product.description}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    
+                    // AJAX-запрос к серверу для получения товаров в корзине
+                    $.ajax({
+                        url: 'api/data/korzina/get_cart_items.php', // Путь к вашему серверному скрипту
+                        type: 'POST', // Убедитесь, что метод POST
+                        contentType: 'application/json', // Правильный заголовок Content-Type
+                        data: JSON.stringify({ user_id: user.id }),
+                        dataType: 'json', // Ожидаем ответ в формате JSON
+                        success: function(response) {
+                            var total = 0;
+                            html += `<div class="row">
+                                        <div class="col-12">
+                                            <button id="delete-selected-items" class="btn btn-danger">Удалить выбранные товары</button>
+                                            <button type="button" class="btn btn-primary float-right" id="checkoutBtn">Оформить заказ</button>
+                                        </div>
+                                    </div>`;
+                            html += '<div class="row">';
+                            response.forEach(function(item) {
+                                total += item.price * item.quantity;
+                                html += `
+                                    <div class="col-md-4">
+                                        <div class="card mb-4 shadow-sm">
+                                            <input type="checkbox" class="cart-item-checkbox" value="${item.cart_item_id}">
+                                            <img src="${item.path_photo}" class="card-img-top" alt="${item.name}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${item.name}</h5>
+                                                <p class="card-text">${item.description}</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <small class="text-muted">${item.price} x ${item.quantity}</small>
                                                 </div>
-                                                <small class="text-muted">${product.price}</small>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            `;
-                        });
+                                `;
+                            });
             
-                        // Закрытие сетки карточек
-                        html += '</div>';
-            
-                        // Вставка HTML на страницу
-                        $('#content').html(html);
+                            html += '</div>';
+                            html += `<div class="row">
+                                        <div class="col-12">
+                                            <span class="float-right">Итого: ${total}</span>
+                                        </div>
+                                    </div>`;
+                            $('#content').html(html);
+                        },
+                        error: function(xhr, status, error) {
+                            var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : xhr.responseText;
+                            console.error("Ошибка при получении товаров в корзине: ", errorMessage);
+                        }
                     });
             
                     showLoggedInMenu();
+                }).fail(function(result){
+                    // Обработка ошибки, если JWT не валиден
+                    console.error("Ошибка аутентификации пользователя.");
                 });
             }
+            
+            $(document).on('click', '.add-to-cart-btn', function() {
+                var jwt = getCookie('jwt');
+                var productId = $(this).data('product-id');
+                $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+                    var user = result.data;
+                    var userId = user.id;
+                    $.ajax({
+                        url: 'api/data/korzina/add_to_cart.php',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ user_id: userId, product_id: productId }),
+                        success: function(response) {
+                            if(response.error) {
+                                alert("Ошибка: " + response.error);
+                            } else {
+                                alert("Товар добавлен в корзину.");
+                                // Обновите здесь количество товаров в корзине, если необходимо
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("Произошла ошибка при добавлении товара в корзину.");
+                        }
+                    });
+                });    
+            });
+            $(document).on('click', '#delete-selected-items', function() {
+                // Собираем ID отмеченных товаров
+                var selectedIds = $('.cart-item-checkbox:checked').map(function() {
+                    return $(this).val();
+                }).get();
+            
+                // Проверяем, что был выбран хотя бы один товар
+                if (selectedIds.length === 0) {
+                    alert('Выберите хотя бы один товар для удаления.');
+                    return;
+                }
+            
+                // Отправляем AJAX-запрос на сервер для удаления товаров
+                $.ajax({
+                    url: 'api/data/korzina/delete_selected_items.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ cart_item_ids: selectedIds }),
+                    success: function(response) {
+                        if(response.error) {
+                            alert("Ошибка: " + response.error);
+                        } else {
+                            alert("Выбранные товары удалены из корзины.");
+                            // Обновляем содержимое корзины
+                            showkorzinaPage();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Произошла ошибка при удалении товаров из корзины.");
+                    }
+                });
+            });
+            
+            $(document).on('click', '#checkoutBtn', function() {
+                var selectedItems = $('input[type="checkbox"]:checked').map(function() {
+                    return $(this).data('cart-item-id');
+                }).get();
+            
+                // AJAX-запрос на сервер для удаления выбранных товаров из корзины
+                // ...
+            });
+            
             //<---------------------------------------------------------------------------------------Korzina Page--------------------------------------------------------------------------------------->
             
             

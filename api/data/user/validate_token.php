@@ -36,6 +36,7 @@
             echo json_encode(array(
                 "message" => "Access granted.",
                 "data" => array(
+                    "id" => $decoded->data->id,
                     "email" => $decoded->data->email,
                     "firstname" => $decoded->data->firstname,
                     "lastname" => $decoded->data->lastname,
