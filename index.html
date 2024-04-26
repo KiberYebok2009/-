@@ -10,6 +10,12 @@
         <link rel="stylesheet" type="text/css" href="custom.css" />
     </head>
 <body>
+    <!-- jQuery & Bootstrap 4 JavaScript libraries -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- jQuery & Bootstrap 4 JavaScript libraries -->
+    
     <!-- navbar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">Скины Дота2</a>
@@ -60,10 +66,6 @@
                             <input type="text" class="form-control" id="productName" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="productDescription">Описание</label>
-                            <textarea class="form-control" id="productDescription" name="description" required></textarea>
-                        </div>
-                        <div class="form-group">
                             <label for="productPrice">Цена</label>
                             <input type="number" class="form-control" id="productPrice" name="price" required>
                         </div>
@@ -88,8 +90,6 @@
             </div>
         </div>
     </div>
-    <!-- Модальное окно для добовления товара -->
-
     <!-- Модальное окно для редактирования товара -->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -122,14 +122,50 @@
         </div>
       </div>
     </div>
-    <!-- Модальное окно для редактирования товара -->
-    
-    
-    <!-- jQuery & Bootstrap 4 JavaScript libraries -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <!-- /jQuery & Bootstrap 4 JavaScript libraries -->
+    <!-- Модальное окно для добавления категории -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel">Добавить категорию</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCategoryForm">
+                        <div class="form-group">
+                            <label for="categoryName">Название категории</label>
+                            <input type="text" class="form-control" id="categoryName" placeholder="Введите название категории">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить категорию</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Модальное окно для удаления категории -->
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCategoryModalLabel">Удалить категорию</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteCategoryForm">
+                        <div class="form-group">
+                            <label for="categoryToDeleteId">ID категории для удаления</label>
+                            <input type="number" class="form-control" id="categoryToDeleteId" placeholder="Введите ID категории" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Удалить категорию</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script>
         $(document).ready(function(){
@@ -198,8 +234,6 @@
             $(document).on('click', '#login', function(){
                 showLoginPage();
             });
-            
-            // trigger when login form is submitted
             // trigger when login form is submitted
             $(document).on('submit', '#login_form', function(e){
                 e.preventDefault(); // Предотвратить стандартную отправку формы
@@ -351,74 +385,74 @@
             //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
             // show home page
             function showHomePage(categoryId = '') {
-                console.log(categoryId);
-                // validate jwt to verify access
                 var jwt = getCookie('jwt');
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-                    var user = result.data; // предполагаем, что результат содержит данные пользователя
-            
-                    // Форма фильтрации товаров по категории
-                    var filterFormHtml = `
-                        <div id="filter" class="mb-3">
-                            <h4>Фильтр по категории</h4>
-                            <form id="filterForm">
-                                <div class="form-group">
-                                    <select class="form-control" id="categoryId" name="categoryId">
-                                        <option value="">Все категории</option>
-                                        <option value="1">Категория 1</option>
-                                        <option value="2">Категория 2</option>
-                                        <!-- Добавьте другие категории здесь -->
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Применить фильтр</button>
-                            </form>
-                        </div>
-                    `;
-            
-                    // Начинаем формировать HTML для товаров с формы фильтрации
-                    var html = filterFormHtml;
-            
-                    // Добавляем кнопку добавления товара, если пользователь - админ
-                    if(user.role == 'admin') {
-                        html += '<div class="col-12 mb-3"><button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button></div>';
-                    }
-            
-                    // Получение списка товаров и отображение их на странице
-                    getProducts(function(products) {
-                        if (products && products.length > 0) {
-                            html += '<div class="row">';
-                            // Перебор массива товаров и создание HTML-кода для каждого товара
-                            products.forEach(function(product) {
-                                html += `
-                                    <div class="col-md-4">
-                                        <div class="card mb-4 shadow-sm">
-                                            <img src="${product.path_photo}" class="card-img-top" alt="${product.name}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${product.name}</h5>
-                                                <p class="card-text">${product.description}</p>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary view-product-btn" data-product-id="${product.id}">View</button>
-                                                        ${user.role == 'admin' ? `
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${product.id}">Edit</button>
-                                                        <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${product.id}">Delete</button>
-                                                        ` : ''}
-                                                    </div>
-                                                    <small class="text-muted">${product.price}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                            });
-                            
-                            html += '</div>'; // Закрытие тега .row
-                        } else {
-                            html += '<p>Товары не найдены.</p>';
+                    var user = result.data;
+                 
+                    $('#content').load('homepage.html', function() {
+                        if(user.role == 'admin') {
+                            var adminHtml = `<div class="col-12 mb-3">
+                                                <button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button>
+                                                <button type="button" class="btn btn-success" id="addCategoryBtn">Добавить категорию</button>
+                                                <button type="button" class="btn btn-danger" id="deleteCategoryBtn">Удалить категорию</button>
+                                            </div>`;
+                            $('#content').append(adminHtml);
                         }
-                        // Вставка HTML-кода на страницу
-                        $('#content').html(html);
-                    }, categoryId);
+                     
+                        $('#filterForm').submit(function(e) {
+                            e.preventDefault();
+                            var selectedCategory = $('#categoryId').val();
+                            showHomePage(selectedCategory);
+                        });
+                        $.ajax({
+                            url: 'api/data/product/get_categories.php', // Путь к вашему серверному скрипту
+                            type: 'GET',
+                            success: function(categories) {
+                                // Очищаем текущие опции и добавляем "Все категории"
+                                var select = $('#categoryId');
+                                select.empty().append($('<option>', {
+                                    value: '',
+                                    text: 'Все категории'
+                                }));
+                    
+                                // Добавляем полученные категории в выпадающий список
+                                categories.forEach(function(category) {
+                                    select.append($('<option>', {
+                                        value: category.id,
+                                        text: category.name
+                                    }));
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Ошибка при получении категорий: ", error);
+                            }
+                        });
+                        
+                        getProducts(function(products) {
+                            var productTemplate = $('#productTemplate').html();
+                            var productsHtml = '';
+                            if (products && products.length > 0) {
+                                products.forEach(function(product) {
+                                    var adminButtons = user.role == 'admin' ? 
+                                        `<button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${product.id}">Edit</button>
+                                         <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${product.id}">Delete</button>` : '';
+                                   
+                                    var productHtml = productTemplate
+                                        .replace(/%path_photo%/g, product.path_photo)
+                                        .replace(/%name%/g, product.name)
+                                        .replace(/%description%/g, product.description)
+                                        .replace(/%id%/g, product.id)
+                                        .replace(/%adminButtons%/g, adminButtons)
+                                        .replace(/%price%/g, product.price);
+            
+                                    productsHtml += productHtml;
+                                });
+                                $('#content').append('<div class="row">' + productsHtml + '</div>');
+                            } else {
+                                $('#content').append('<p>Товары не найдены.</p>');
+                            }
+                        }, categoryId);
+                    });
             
                     showLoggedInMenu();
                 })
@@ -450,13 +484,75 @@
                 });
             }
             // Обработчик отправки формы фильтрации
-            $(document).on('submit', '#filterForm', function(e) {
-                e.preventDefault();
-                var selectedCategory = $('#categoryId').val();
-                console.log(selectedCategory);
-                showHomePage(selectedCategory);
+
+            
+            // Открытие модального окна категории
+            $('body').on('click', '#addCategoryBtn', function() {
+                // Открытие модального окна
+                $('#categoryModal').modal('show');
             });
-        
+            // Обработка отправки формы категории
+            $('#addCategoryForm').submit(function(event) {
+                event.preventDefault(); // Предотвратить стандартную отправку формы
+                var categoryName = $('#categoryName').val();
+                var categoryDescription = $('#categoryDescription').val(); // Получаем описание категории
+                
+                // Проверка введенного названия и описания категории
+                if (categoryName.trim() === '') {
+                    alert('Пожалуйста, введите название категории.');
+                    return;
+                }
+                
+                // AJAX запрос для отправки названия и описания категории на сервер
+                $.ajax({
+                    url: 'api/data/product/add_category.php', // Укажите здесь URL серверного скрипта
+                    type: 'POST',
+                    data: {
+                          name: categoryName // Данные, которые вы хотите отправить на сервер
+                    },
+                    success: function(response) {
+                          // Обработка успешного ответа от сервера
+                          alert('Категория успешно добавлена!');
+                          showHomePage();
+                    },
+                    error: function(xhr, status, error) {
+                          // Обработка ошибок при запросе
+                          alert('Произошла ошибка при добавлении категории.');
+                    }
+                });
+                
+                // Закрыть модальное окно и очистить форму
+                $('#categoryModal').modal('hide');
+                $('#addCategoryForm')[0].reset();
+            });
+            // Открытие модального окна удаления категории
+            $('body').on('click', '#deleteCategoryBtn', function() {
+                // Открытие модального окна
+                $('#deleteCategoryModal').modal('show');
+            });
+            // Обработка отправки формы удаления категории
+            $('#deleteCategoryForm').submit(function(event) {
+                event.preventDefault();
+                var categoryId = $('#categoryToDeleteId').val();
+                $.ajax({
+                    url: 'api/data/product/delete_category.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ id: categoryId }),
+                    success: function(response) {
+                       alert('Категория успешно удалена!'); // Показываем сообщение об успехе
+                        $('#deleteCategoryModal').modal('hide'); // Закрываем модальное окно
+                        showHomePage();
+                    },
+                    error: function(xhr, status, error) {
+                        // Если ошибка не связана с JSON-ответом, используйте xhr.responseText
+                        var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : xhr.responseText;
+                        alert("Ошибка: " + errorMessage); // Показываем сообщение об ошибке
+                    }
+                });
+            });
+            
+            
             // Функция для открытия модального окна редактирования товара и заполнения его данными
             function editProductModal(productId) {
                 $.ajax({
@@ -483,13 +579,11 @@
                     }
                 });
             }
-            
             // Обработчик нажатия на кнопку редактирования товара
             $(document).on('click', '.edit-product-btn', function() {
                 var productId = $(this).data('product-id');
                 editProductModal(productId); // Вызов функции для редактирования товара
             });
-            
             $('#editProductForm').submit(function(e) {
                 e.preventDefault(); // Предотвращаем стандартное поведение формы
         
@@ -518,10 +612,29 @@
             $('body').on('click', '#addProductBtn', function() {
                 // Очистка формы перед открытием модального окна
                 $('#addProductForm')[0].reset();
+                var select = $('#productCategory');
+                select.empty();
+        
+                // Добавляем AJAX запрос для получения категорий
+                $.ajax({
+                    url: 'api/data/product/get_categories.php', // Путь к вашему серверному скрипту
+                    type: 'GET',
+                    success: function(categories) {
+                        // Добавляем полученные категории в выпадающий список
+                        categories.forEach(function(category) {
+                            select.append($('<option>', {
+                                value: category.id,
+                                text: category.name
+                            }));
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Ошибка при получении категорий: ", error);
+                    }
+                });
                 // Открытие модального окна
                 $('#addProductModal').modal('show');
             });
-                
             $('#addProductForm').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
@@ -546,7 +659,7 @@
                 });
             });
             
-            // Добавление обработчика событий для кнопок удаления
+            // Добавление обработчика событий для кнопок удаления товара
             $(document).on('click', '.delete-product-btn', function() {
                 var productId = $(this).data('product-id');
                 if (confirm('Вы уверены, что хотите удалить этот товар?')) {

@@ -107,13 +107,16 @@
     
         // Метод для создания нового товара
         public function create() {
-            $query = "INSERT INTO {$this->table_name} (name, description, price, path_photo, category_id) VALUES (:name, :description, :price, :path_photo, :category_id)";
+            $query = "INSERT INTO products (name, description, price, path_photo, category_id)
+                SELECT :name, CONCAT('Коллекция: ', c.name), :price, :path_photo, :category_id
+                FROM categories c
+                WHERE c.id = :category_id;";
+                
         
             $stmt = $this->conn->prepare($query);
         
             // очистка и привязка значений
             $stmt->bindParam(':name', htmlspecialchars(strip_tags($this->name)));
-            $stmt->bindParam(':description', htmlspecialchars(strip_tags($this->description)));
             $stmt->bindParam(':price', htmlspecialchars(strip_tags($this->price)));
             $stmt->bindParam(':path_photo', htmlspecialchars(strip_tags($this->path_photo)));
             $stmt->bindParam(':category_id', htmlspecialchars(strip_tags($this->category_id)));

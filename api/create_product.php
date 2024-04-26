@@ -44,7 +44,6 @@
     
         // Получение данных из формы
         $product->name = $_POST['name'];
-        $product->description = $_POST['description'];
         $product->price = $_POST['price'];
         // $product->path_photo уже установлено при обработке файла
         $product->category_id = $_POST['category_id'];
