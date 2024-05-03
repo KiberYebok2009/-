@@ -8,6 +8,7 @@
         <!-- Bootstrap 4 CSS and custom CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
         <link rel="stylesheet" type="text/css" href="custom.css" />
+        <link rel="stylesheet" type="text/css" href="api/css/style.css" />
     </head>
 <body>
     <!-- jQuery & Bootstrap 4 JavaScript libraries -->
@@ -28,8 +29,8 @@
             </div>
             <div class="navbar-nav ml-auto">
                 <a class="nav-item nav-link" href="#" id='korzina'>Корзина</a>
-                <img src="" href="#" alt="Профиль" style="display: none; width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;" id='profile_photo' />
-                <a class="nav-item nav-link" href="#" id='update_account'>Профиль</a>
+                
+                <a class="nav-item nav-link" href="#" id='update_account' value="Профиль"><img src="" href="#" alt="Профиль" style="display: none; width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;" id='profile_photo' /></a>
                 <a class="nav-item nav-link" href="#" id='logout'>Выход</a>
                 <a class="nav-item nav-link" href="#" id='login'>Вход</a>
                 <!--span class="nav-item nav-link divider" id='cherta'>\</span-->
@@ -38,7 +39,7 @@
         </div>
     </nav>
     <!-- /navbar -->
-     
+
     <!-- container -->
     <main role="main" class="container starter-template">
 
@@ -48,7 +49,45 @@
                 <div id="content"></div>
     </main>
     <!-- /container -->
-
+    
+    <!-- Модальное окно для редактирования профиля -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Обновить профиль</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Форма для редактирования профиля -->
+                    <form id='update_account_form' enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="firstname">Имя</label>
+                            <input type="text" class="form-control" name="firstname" id="firstname" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Фамилия</label>
+                            <input type="text" class="form-control" name="lastname" id="lastname" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" class="form-control" name="password" id="password" />
+                        </div>
+                        <div class="form-group">
+                            <label for="profile_photo">Фото профиля</label>
+                            <input type="file" class="form-control" name="profile_photo" id="profile_photo" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary" form="update_account_form">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Модальное окно для добовления товара -->
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -166,6 +205,23 @@
             </div>
         </div>
     </div>
+    <!-- Модальное окно для деталей заказа -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">Детали заказа</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="order-details-container">
+                    <!-- Здесь будут отображаться детали заказа -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
     
     <script>
         $(document).ready(function(){
@@ -190,16 +246,10 @@
                             <label for="password">Пароль</label>
                             <input type="password" class="form-control" name="password" id="password" required />
                         </div>
-                        <div class="form-group">
-                            <label for="role">Роль</label>
-                            <select class="form-control" name="role" id="role" required>
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
                         <!-- Скрытое поле для установки значения profile_photo -->
                         <input type="hidden" name="profile_photo" value="api/images/server/server-error.jpg" />
-                       
+                        <input type="hidden" name="role" value="user" />
+                        
                         <button type='submit' class='btn btn-primary'>Sign Up</button>
                     </form>
                     `;
@@ -316,6 +366,9 @@
                         success : function(result) {
                             // Уведомление пользователя об успешном обновлении
                             $('#response').html("<div class='alert alert-success'>Account was updated.</div>");
+                            $('#editProfileModal').modal('hide');
+                            showUpdateAccountForm();
+                            
                         },
                         error: function(xhr, resp, text){
                             console.log(resp, text);
@@ -388,7 +441,6 @@
                 var jwt = getCookie('jwt');
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                     var user = result.data;
-                 
                     $('#content').load('homepage.html', function() {
                         if(user.role == 'admin') {
                             var adminHtml = `<div class="col-12 mb-3">
@@ -865,33 +917,30 @@
                 // validate jwt to verify access
                 var jwt = getCookie('jwt');
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+                    var user = result.data;
+                    var userId = user.id;
+                    var userRole = user.role;
+                    var userFirstname = user.firstname;
                     // if response is valid, put user details in the form
-                    var html = `
-                        <h2>Update Account</h2>
-                        <form id='update_account_form' enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="firstname">Имя</label>
-                                <input type="text" class="form-control" name="firstname" id="firstname" required value="${result.data.firstname}" />
-                            </div>
-                            <div class="form-group">
-                                <label for="lastname">Фамилия</label>
-                                <input type="text" class="form-control" name="lastname" id="lastname" required value="${result.data.lastname}" />
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Пароль</label>
-                                <input type="password" class="form-control" name="password" id="password" />
-                            </div>
-                            <div class="form-group">
-                                <label for="profile_photo">Фото профиля</label>
-                                <input type="file" class="form-control" name="profile_photo" id="profile_photo" />
-                            </div>
-                            <button type='submit' class='btn btn-primary'>
-                                Save Changes
-                            </button>
-                        </form>
-                    `;
+                    var html = `<div class="col-12 d-flex justify-content-end align-items-center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
+                                            Редактировать профиль
+                                        </button>
+                                    </div>
+                                `;
+                    if(user.role == 'admin'){
+                    html += `<div id="admin-orders-container">`;
+                        getAllOrders();
+                    html += `</div>`;
+                        
+                    }else{    
+                        html += `<div id="orders-container"><h3>Ваши заказы:</h3></div>`;
+                        getOrders(userId, userRole);
+                    }
                     clearResponse();
                     $('#content').html(html);
+                    
+                   
                 })
                 // on error/fail, tell the user he needs to login to show the account page
                 .fail(function(result){
@@ -899,6 +948,188 @@
                     $('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
                 });
             }
+            $(document).on('click', '#editProfileModal', function() {
+                // Предполагается, что данные пользователя доступны в result.data
+                // Заполните форму данными пользователя
+                $('#firstname').val(result.user.firstname);
+                $('#lastname').val(result.user.lastname);
+                // Остальные поля...
+            });
+            function getOrders(userId, userRole) {
+                $.ajax({
+                    url: 'api/data/korzina/get_user_orders.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ user_id: userId }),
+                    success: function(response) {
+                        if(response.error) {
+                            $('#orders-container').html(`<div class='alert alert-danger'>${response.error}</div>`);
+                        } else {
+                            if(userRole == 'user') {
+                                var ordersHtml = `<div class='list-group'>`;
+                                response.forEach(function(order) {
+                                    ordersHtml += `
+                                        <a class='list-group-item list-group-item-action'>
+                                            <h5 class='list-group-item-heading'>Заказ #${order.order_id}</h5>
+                                            <p class='list-group-item-text'>Дата: ${order.order_date}</p>
+                                            <p class='list-group-item-text'>Сумма: ${order.total}</p>
+                                            <p class='list-group-item-text'>Статус: ${order.status}</p>
+                                        </a>
+                                    `;
+                                });
+                                ordersHtml += `</div>`;
+                            }
+                            
+                            $('#orders-container').html(ordersHtml);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#orders-container').html(`<div class='alert alert-danger'>Произошла ошибка при получении информации о заказах.</div>`);
+                    }
+                });
+            }
+            
+            function getAllOrders() {
+                $.ajax({
+                    url: 'api/data/korzina/get_all_orders.php',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: function(response) {
+                        if(response.error) {
+                            console.log("Ошибка: " + response.error);
+                        } else {
+                            displayAllOrders(response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Произошла ошибка при получении всех заказов.");
+                    }
+                });
+            }
+            function displayAllOrders(orders) {
+                var ordersHtml = '<table class="table">';
+                ordersHtml += `
+                    <thead>
+                        <tr>
+                            <th>Номер заказа</th>
+                            <th>Пользователь</th>
+                            <th>Дата заказа</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+                orders.forEach(function(order) {
+                    ordersHtml += `
+                        <tr>
+                            <td>${order.order_id}</td>
+                            <td>${order.firstname} ${order.lastname}</td>
+                            <td>${order.order_date}</td>
+                            <td>${order.total}</td>
+                            <td><button class="btn btn-info view-order-details" data-order-id="${order.order_id}">Просмотреть детали</button>
+                            </td>
+                            <td>
+                                <select class="form-control order-status" data-order-id="${order.order_id}">
+                                    <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Обработка</option>
+                                    <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Отправлен</option>
+                                    <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Доставлен</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary update-order-status" data-order-id="${order.order_id}">Обновить статус</button>
+                            </td>
+                        </tr>`;
+                });
+            
+                ordersHtml += '</tbody></table>';
+                $('#admin-orders-container').html(ordersHtml);
+            }
+            // Обработчик нажатия на кнопку "Обновить статус"
+            $(document).on('click', '.update-order-status', function() {
+                var orderId = $(this).data('order-id');
+                var status = $(this).closest('tr').find('.order-status').val();
+                updateOrderStatus(orderId, status);
+            });
+            // Функция для обновления статуса заказа
+            function updateOrderStatus(orderId, status) {
+                $.ajax({
+                    url: 'api/data/korzina/update_order_status.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ order_id: orderId, status: status }),
+                    success: function(response) {
+                        if(response.error) {
+                            alert("Ошибка: " + response.error);
+                        } else {
+                            alert("Статус заказа обновлен.");
+                            getAllOrders(); // Перезагрузить список заказов
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Произошла ошибка при обновлении статуса заказа.");
+                    }
+                });
+            }
+              
+            $(document).on('click', '.view-order-details', function() {
+                var orderId = $(this).data('order-id');
+                getOrderDetails(orderId);
+            });
+            function getOrderDetails(orderId) {
+                $.ajax({
+                    url: 'api/data/profile/get_order_details.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ order_id: orderId }),
+                    success: function(response) {
+                        if(response.error) {
+                            alert("Ошибка: " + response.error);
+                        } else {
+                            displayOrderDetails(response, orderId);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Произошла ошибка при получении деталей заказа.");
+                    }
+                });
+            }
+            function displayOrderDetails(orderDetails, orderId) {
+                var detailsHtml = `<h4>Детали заказа #${orderId}</h4>`;
+                detailsHtml += `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Название товара</th>
+                                <th>Количество</th>
+                                <th>Цена за единицу</th>
+                                <th>Общая стоимость</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+            
+                // Добавляем строки для каждого товара
+                orderDetails.forEach(function(item) {
+                    detailsHtml += `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td>${item.quantity}</td>
+                            <td>${item.price}</td>
+                            <td>${(item.price * item.quantity).toFixed(2)}</td>
+                        </tr>`;
+                });
+            
+                // Заканчиваем таблицу
+                detailsHtml += `
+                        </tbody>
+                    </table>`;
+                // Вставляем HTML в модальное окно или специальный контейнер
+                $('#order-details-container').html(detailsHtml);
+                // Показываем модальное окно или контейнер
+                $('#orderDetailsModal').modal('show');
+            } 
+            
             
             // function to make form values to json format
             $.fn.serializeObject = function(){
