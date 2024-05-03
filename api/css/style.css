@@ -4,7 +4,7 @@
     --font-size: calc(1vw + 1vw);
 }
 *{
-    cursor:url("../images/artem/emblem_32x32.png"),pointer;
+    cursor:url("../images/artem/emblem_32x32.png") 16 16,pointer;
 }
 body{
     margin: 0px;
@@ -438,6 +438,7 @@ html::-webkit-scrollbar{
   
   /* Кнопка закрытия */
 .close {
+    
     float: right;
     font-size: 28px;
     font-weight: bold;

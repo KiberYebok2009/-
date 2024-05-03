@@ -103,16 +103,17 @@ class User{
         return false;
     }
     
-    // update a user record
     public function update(){
         // Если пароль предоставлен, обновляем его
         $password_set = !empty($this->password) ? ", password = :password" : "";
+        // Если фото предоставлено, обновляем его
+        $photo_set = !empty($this->profile_photo) ? ", profile_photo = :profile_photo" : "";
         
         $query = "UPDATE " . $this->table_name . "
                   SET
                       firstname = :firstname,
-                      lastname = :lastname,
-                      profile_photo = :profile_photo
+                      lastname = :lastname
+                      {$photo_set}
                       {$password_set}
                   WHERE id = :id";
                   
@@ -122,13 +123,17 @@ class User{
         // Санитизация входных данных
         $this->firstname = htmlspecialchars(strip_tags($this->firstname));
         $this->lastname = htmlspecialchars(strip_tags($this->lastname));
-        $this->profile_photo = htmlspecialchars(strip_tags($this->profile_photo)); // Санитизация поля profile_photo
-    
+        
         // Привязываем значения
         $stmt->bindParam(':firstname', $this->firstname);
         $stmt->bindParam(':lastname', $this->lastname);
-        $stmt->bindParam(':profile_photo', $this->profile_photo); // Привязываем фото профиля
-    
+        
+        // Привязываем фото профиля, если оно предоставлено
+        if(!empty($this->profile_photo)){
+            $this->profile_photo = htmlspecialchars(strip_tags($this->profile_photo));
+            $stmt->bindParam(':profile_photo', $this->profile_photo);
+        }
+        
         // Привязываем ID записи для редактирования
         $stmt->bindParam(':id', $this->id);
     
@@ -145,7 +150,6 @@ class User{
     
         return false;
     }
-
 }
 
 

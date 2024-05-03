@@ -40,31 +40,31 @@
     
             // set user property values
             $user->id = $decoded->data->id;
-            $user->firstname = !empty($_POST['firstname']) ? $_POST['firstname'] : $user->firstname;
-            $user->lastname = !empty($_POST['lastname']) ? $_POST['lastname'] : $user->lastname;
-    
+            $user->firstname = !empty($_POST['firstname']) ? $_POST['firstname'] : $decoded->data->firstname;
+            $user->lastname = !empty($_POST['lastname']) ? $_POST['lastname'] : $decoded->data->lastname;
+            $user->profile_photo = $decoded->data->profile_photo; // Используем текущее фото, если новое не загружено
+
             // Check if a new profile photo was uploaded
-            if (isset($_FILES['profile_photo']) && is_uploaded_file($_FILES['profile_photo']['tmp_name'])) {
+            if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
                 $profile_photo = $_FILES['profile_photo'];
                 $target_directory = "images/server/";
                 $target_file = $target_directory . basename($profile_photo["name"]);
                 $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
                 $new_filename = $target_directory . uniqid() . '.' . $file_type;
             
-                // Attempt to upload the file
+                // Пытаемся загрузить файл
                 if (move_uploaded_file($profile_photo["tmp_name"], $new_filename)) {
-                    // Set the new profile photo path
+                    // Устанавливаем новый путь к фото профиля
                     $user->profile_photo = 'api/' . $new_filename;
                 } else {
-                    // Set response code to 400 as the file upload failed
+                    // Устанавливаем код ответа 400, так как загрузка файла не удалась
                     http_response_code(400);
-                    // Show error message
+                    // Выводим сообщение об ошибке
                     echo json_encode(array("message" => "Unable to upload profile photo."));
                     exit();
                 }
             }
                 
-            // update the user record
             // update the user record
             if($user->update()){
                 // regenerate jwt
@@ -76,7 +76,7 @@
                        "id" => $user->id,
                        "firstname" => $user->firstname,
                        "lastname" => $user->lastname,
-                       "profile_photo" => $user->profile_photo // Включите путь к изображению профиля
+                       "profile_photo" => $user->profile_photo // Используем обновленный путь к фото
                    )
                 );
                 $jwt = JWT::encode($token, $key, 'HS256');

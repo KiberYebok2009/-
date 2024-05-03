@@ -32,9 +32,8 @@
                 
                 <a class="nav-item nav-link" href="#" id='update_account' value="Профиль"><img src="" href="#" alt="Профиль" style="display: none; width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;" id='profile_photo' /></a>
                 <a class="nav-item nav-link" href="#" id='logout'>Выход</a>
-                <a class="nav-item nav-link" href="#" id='login'>Вход</a>
-                <!--span class="nav-item nav-link divider" id='cherta'>\</span-->
-                <a class="nav-item nav-link" href="#" id='sign_up'>Регистрация</a>
+                
+                <a class="nav-item nav-link" href="#" id='authorize'>Авторизация</a>
             </div>
         </div>
     </nav>
@@ -77,8 +76,13 @@
                         </div>
                         <div class="form-group">
                             <label for="profile_photo">Фото профиля</label>
+                            <!-- Отображение текущего фото -->
+                            <img src="" id="current_photo" style="width: 100px; height: auto;">
                             <input type="file" class="form-control" name="profile_photo" id="profile_photo" />
+                            <!-- Скрытое поле для хранения пути к текущему фото -->
+                            <input type="hidden" name="current_photo_path" id="current_photo_path" value="URL_ТЕКУЩЕГО_ФОТО" />
                         </div>
+                        
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -225,37 +229,51 @@
     
     <script>
         $(document).ready(function(){
-        // show sign up / registration form
-            $(document).on('click', '#sign_up', function(){
-                var html = `
-                    <h2>Sign Up</h2>
-                    <form id='sign_up_form' enctype="multipart/form-data"> <!-- Добавлен атрибут enctype -->
-                        <div class="form-group">
-                            <label for="firstname">Имя</label>
-                            <input type="text" class="form-control" name="firstname" id="firstname" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="lastname">Фамилия</label>
-                            <input type="text" class="form-control" name="lastname" id="lastname" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Пароль</label>
-                            <input type="password" class="form-control" name="password" id="password" required />
-                        </div>
-                        <!-- Скрытое поле для установки значения profile_photo -->
-                        <input type="hidden" name="profile_photo" value="api/images/server/server-error.jpg" />
-                        <input type="hidden" name="role" value="user" />
-                        
-                        <button type='submit' class='btn btn-primary'>Sign Up</button>
-                    </form>
-                    `;
-                clearResponse();
-                $('#content').html(html);
+            // Обработчик клика для кнопки "Авторизация"
+            $(document).on('click', '#authorize', function() {
+                setCookie("jwt", "", 1);
+                // Загрузка содержимого файла authorize.html
+                $.get("authorize.html", function(html) {
+                    $('#content').html(html);
+                    clearResponse();
+                });
             });
+            // Обработчик клика для переключения на раздел регистрации
+            $(document).on('click', '#show_signup', function() {
+                $('#login-section').hide();
+                showLoggedOutMenu();
+                $('#signup-section').show();
+            });
+            
+            // Обработчик клика для переключения обратно на раздел входа
+            $(document).on('click', '#show_login', function() {
+                $('#signup-section').hide();
+                $('#login-section').show();
+                showLoggedOutMenu();
+            });
+            
+            // logout the user
+            $(document).on('click', '#logout', function() {
+                // Удаление JWT и других данных пользователя из хранилища
+                setCookie("jwt", "", 1);
+                localStorage.removeItem('jwt');
+                localStorage.removeItem('userPhoto');
+                // Показать страницу авторизации
+                showAuthorizePage();
+            });
+            
+            // Функция для показа страницы авторизации
+            function showAuthorizePage() {
+                $.get("authorize.html", function(html) {
+                    $('#content').html(html);
+                    clearResponse();
+                    // Показываем раздел входа и скрываем раздел регистрации
+                    $('#login-section').show();
+                    showLoggedOutMenu();
+                    $('#signup-section').hide();
+                });
+            }
+            
             // trigger when registration form is submitted
             $(document).on('submit', '#sign_up_form', function(){
                 // get form data
@@ -280,10 +298,6 @@
                 return false;
             });
         
-            // show login form
-            $(document).on('click', '#login', function(){
-                showLoginPage();
-            });
             // trigger when login form is submitted
             $(document).on('submit', '#login_form', function(e){
                 e.preventDefault(); // Предотвратить стандартную отправку формы
@@ -378,39 +392,10 @@
                     });
                 return false;
             });
-            // logout the user
-            $(document).on('click', '#logout', function(){
-                showLoginPage();
-                $('#response').html("<div class='alert alert-info'>You are logged out.</div>");
-            });
                     
             // remove any prompt messages
             function clearResponse(){
                 $('#response').html('');
-            }
-            
-            // show login page
-            function showLoginPage(){
-                // remove jwt
-                setCookie("jwt", "", 1);
-                // login page html
-                var html = `
-                    <h2>Login</h2>
-                    <form id='login_form'>
-                        <div class='form-group'>
-                            <label for='email'>Email Address</label>
-                            <input type='email' class='form-control' id='email' name='email' placeholder='Enter email'>
-                        </div>
-                        <div class='form-group'>
-                            <label for='password'>Пароль</label>
-                            <input type='password' class='form-control' id='password' name='password' placeholder='Password'>
-                        </div>
-                        <button type='submit' class='btn btn-primary'>Login</button>
-                    </form>
-                    `;
-                $('#content').html(html);
-                clearResponse();
-                showLoggedOutMenu();
             }
             
             // function to set cookie
@@ -425,13 +410,13 @@
             // if the user is logged out
             function showLoggedOutMenu(){
                 // show login and sign up from navbar & hide logout button
-                $("#login, #sign_up").show();
+                $("#authorize").show();
                 $("#logout, #profile_photo").hide();
             }
             // if the user is logged in
             function showLoggedInMenu(){
                 // hide login and sign up from navbar & show logout button
-                $("#login, #cherta , #sign_up").hide();
+                $("#authorize").hide();
                 $("#logout, #profile_photo").show();
             }
         
@@ -510,7 +495,7 @@
                     showLoggedInMenu();
                 })
                 .fail(function(result){
-                    showLoginPage();
+                    showAuthorizePage();
                     $('#response').html("<div class='alert alert-danger'>Please login to access the home page.</div>");
                 });
             }
@@ -802,9 +787,10 @@
                     });
             
                     showLoggedInMenu();
-                }).fail(function(result){
-                    // Обработка ошибки, если JWT не валиден
-                    console.error("Ошибка аутентификации пользователя.");
+                })// on error/fail, tell the user he needs to login to show the account page
+                .fail(function(result){
+                    showAuthorizePage();
+                    $('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
                 });
             }
             
@@ -913,6 +899,8 @@
                 }
                 return "";
             }
+
+            var globalUserData = null;
             function showUpdateAccountForm(){
                 // validate jwt to verify access
                 var jwt = getCookie('jwt');
@@ -920,7 +908,7 @@
                     var user = result.data;
                     var userId = user.id;
                     var userRole = user.role;
-                    var userFirstname = user.firstname;
+                    globalUserData = result.data;
                     // if response is valid, put user details in the form
                     var html = `<div class="col-12 d-flex justify-content-end align-items-center">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
@@ -944,17 +932,26 @@
                 })
                 // on error/fail, tell the user he needs to login to show the account page
                 .fail(function(result){
-                    showLoginPage();
+                    showAuthorizePage();
                     $('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
                 });
             }
-            $(document).on('click', '#editProfileModal', function() {
-                // Предполагается, что данные пользователя доступны в result.data
-                // Заполните форму данными пользователя
-                $('#firstname').val(result.user.firstname);
-                $('#lastname').val(result.user.lastname);
-                // Остальные поля...
+            $('#editProfileModal').on('shown.bs.modal', function() {
+                // Проверяем, есть ли данные пользователя
+                if (globalUserData) {
+                    // Заполняем форму данными пользователя
+                    $('#firstname').val(globalUserData.firstname);
+                    $('#lastname').val(globalUserData.lastname);
+                    $('#current_photo_path').val(globalUserData.profile_photo);
+                    $('#current_photo').attr('src', globalUserData.profile_photo);
+                
+                }
             });
+            $(document).on('click', '.btn-edit-profile', function() {
+                // Открытие модального окна
+                $('#editProfileModal').modal('show');
+            });
+            
             function getOrders(userId, userRole) {
                 $.ajax({
                     url: 'api/data/korzina/get_user_orders.php',
@@ -988,7 +985,6 @@
                     }
                 });
             }
-            
             function getAllOrders() {
                 $.ajax({
                     url: 'api/data/korzina/get_all_orders.php',
