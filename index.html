@@ -7,7 +7,7 @@
         <title>Rest API Authentication Example</title>
         <!-- Bootstrap 4 CSS and custom CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="api/css/custom.css" />
+        <link rel="stylesheet" type="text/css" href="api/css/custommmm.css" />
         <link rel="stylesheet" type="text/css" href="api/css/style.css" />
     </head>
 <body>
@@ -268,6 +268,9 @@
     
     <script>
         $(document).ready(function(){
+            //Отображение главной страницы при входе на сайт 
+            showHomePage();
+            
             // Обработчик клика для кнопки "Авторизация"
             $(document).on('click', '#authorize', function() {
                 setCookie("jwt", "", 1);
@@ -284,6 +287,9 @@
                     $('#signup-section').hide();
                 });
             }
+            
+            //авторизации
+            /* Для Дефолтной страницы authorize_defolt
             // Обработчик клика для переключения на раздел регистрации
             $(document).on('click', '#show_signup', function() {
                 $('#login-section').hide();
@@ -297,6 +303,71 @@
                 $('#login-section').show();
                 showLoggedOutMenu();
             });
+            */
+            // trigger when registration form is submitted
+            $(document).on('submit', '#sign_up_form', function(){
+                // get form data
+                var sign_up_form=$(this);
+                var form_data=JSON.stringify(sign_up_form.serializeObject());
+                // submit form data to api
+                $.ajax({
+                    url: "api/data/user/create_user.php",
+                    type : "POST",
+                    contentType : 'application/json',
+                    data : form_data,
+                    success : function(result) {
+                        // if response is a success, tell the user it was a successful sign up & empty the input boxes
+                        //$('#response').html("<div class='alert alert-success'>Successful sign up. Please login.</div>");
+                        showNotification("Successful sign up. Please login.", false);
+                        sign_up_form.find('input').val('');
+                    },
+                    error: function(xhr, resp, text){
+                        // on error, tell the user sign up failed
+                        //$('#response').html("<div class='alert alert-danger'>Unable to sign up. Please contact admin.</div>");
+                        showNotification("Unable to sign up. Please contact admin.", true);
+                    }
+                });
+                return false;
+            });
+            // trigger when login form is submitted
+            $(document).on('submit', '#login_form', function(e){
+                e.preventDefault(); // Предотвратить стандартную отправку формы
+            
+                var login_form = $(this);
+                var form_data = login_form.serializeObject();
+            
+                // отправить данные формы на сервер
+                $.ajax({
+                    url: "api/data/user/login.php",
+                    type : "POST",
+                    contentType : 'application/json',
+                    data : JSON.stringify(form_data),
+                    success : function(result){
+                        // сохранить jwt в cookie
+                        setCookie("jwt", result.jwt, 1);
+            
+                        // показать домашнюю страницу и сообщить пользователю об успешном входе
+                        showHomePage();
+                        //$('#response').html("<div class='alert alert-success'>Successful login.</div>");
+                        showNotification("Успешный вход!", false);
+                        
+                        // декодировать JWT и обновить фото профиля
+                        var jwt_data = parseJwt(result.jwt);
+                        if(jwt_data.data.profile_photo) {
+                            $('#profile_photo').attr('src',jwt_data.data.profile_photo);
+                        }
+                    },
+                    error: function(xhr, resp, text){
+                        // в случае ошибки сообщить пользователю о неудачной попытке входа
+                        //$('#response').html("<div class='alert alert-danger'>Login failed. Email or password is incorrect.</div>");
+                        showNotification("Login failed. Email or password is incorrect.", true);
+                        login_form.find('input').val('');
+                    }
+                });
+            });
+            //\авторизации
+            
+            
             // logout the user
             $(document).on('click', '#logout', function() {
                 // Удаление JWT и других данных пользователя из хранилища
@@ -402,18 +473,26 @@
             // show home page
             function showHomePage(categoryId = '') {
                 var jwt = getCookie('jwt');
+                var user;
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-                    var user = result.data;
-                    $('#content').load('homepage.html', function() {
-                        if(user.role == 'admin') {
-                            var adminHtml = `<div class="col-12 mb-3">
-                                                <button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button>
-                                                <button type="button" class="btn btn-success" id="addCategoryBtn">Добавить категорию</button>
-                                                <button type="button" class="btn btn-danger" id="deleteCategoryBtn">Удалить категорию</button>
-                                            </div>`;
-                            $('#content').append(adminHtml);
-                        }
-                     
+                    user = result.data;
+            
+                    showLoggedInMenu();
+            
+                    if(user.role == 'admin') {
+                        var adminHtml = `<div class="col-12 mb-3">
+                                            <button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button>
+                                            <button type="button" class="btn btn-success" id="addCategoryBtn">Добавить категорию</button>
+                                            <button type="button" class="btn btn-danger" id="deleteCategoryBtn">Удалить категорию</button>
+                                          </div>`;
+                        $('#content').append(adminHtml);
+                    }
+                })
+                .fail(function(result){
+                    showLoggedOutMenu();
+                });
+            
+                $('#content').load('homepage.html', function() {    
                         $('#filterForm').submit(function(e) {
                             e.preventDefault();
                             var selectedCategory = $('#categoryId').val();
@@ -448,11 +527,8 @@
                             var productsHtml = '';
                             if (products && products.length > 0) {
                                 products.forEach(function(product) {
-                                    var adminButtons = user.role == 'admin' ? 
-                                        `<button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${product.id}">Edit</button>
-                                         <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${product.id}">Delete</button>
-                                         ` : '';
-                                   
+                                    var adminButtons = generateAdminButtons(product.id, user ? user.role : ''); // Используем user.role, если user определена
+                                    
                                     var productHtml = productTemplate
                                         .replace(/%path_photo%/g, product.path_photo)
                                         .replace(/%name%/g, product.name)
@@ -460,7 +536,7 @@
                                         .replace(/%id%/g, product.id)
                                         .replace(/%adminButtons%/g, adminButtons)
                                         .replace(/%price%/g, product.price);
-            
+                
                                     productsHtml += productHtml;
                                 });
                                 $('#content').append('<div class="row">' + productsHtml + '</div>');
@@ -470,15 +546,15 @@
                         }, categoryId);
                     });
             
-                    showLoggedInMenu();
-                })
-                .fail(function(result){
-                    showAuthorizePage();
-                    //$('#response').html("<div class='alert alert-danger'>Please login to access the home page.</div>");
-                    showNotification("Please login to access the home page.", true);
-                });
             }
-            
+            function generateAdminButtons(productId, userRole) {
+                if (userRole === 'admin') {
+                    return `<button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${productId}">Edit</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${productId}">Delete</button>`;
+                } else {
+                    return '';
+                }
+            }
             // Функция для получения товаров
             function getProducts(callback, categoryId = '') {
                 // Подготовка данных для запроса
@@ -500,9 +576,8 @@
                     }
                 });
             }
-            // Обработчик отправки формы фильтрации
 
-            
+            //adminButtons
             // Открытие модального окна категории
             $('body').on('click', '#addCategoryBtn', function() {
                 // Открытие модального окна
@@ -542,6 +617,7 @@
                 $('#categoryModal').modal('hide');
                 $('#addCategoryForm')[0].reset();
             });
+            
             // Открытие модального окна удаления категории
             $('body').on('click', '#deleteCategoryBtn', function() {
                 // Открытие модального окна
@@ -695,6 +771,7 @@
                     });
                 }
             });
+            //\adminButtons
             
             //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
         
@@ -774,10 +851,15 @@
                             }
                         },
                         error: function(xhr, status, error) {
+                            showNotification("Вы неавторизованный пользователь!", true);
                             alert("Произошла ошибка при добавлении товара в корзину.");
                         }
                     });
-                });    
+                })
+                .fail(function(result){
+                    //$('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
+                    showNotification("Вы неавторизованный пользователь!", true);
+                });
             });
             $(document).on('click', '#delete-selected-items', function() {
                 // Собираем ID отмеченных товаров

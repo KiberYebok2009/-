@@ -47,7 +47,7 @@
             // Check if a new profile photo was uploaded
             if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
                 $profile_photo = $_FILES['profile_photo'];
-                $target_directory = "images/server/";
+                $target_directory = "images/user/";
                 $target_file = $target_directory . basename($profile_photo["name"]);
                 $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
                 $new_filename = $target_directory . uniqid() . '.' . $file_type;
