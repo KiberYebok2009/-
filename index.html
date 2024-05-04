@@ -7,7 +7,7 @@
         <title>Rest API Authentication Example</title>
         <!-- Bootstrap 4 CSS and custom CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="custom.css" />
+        <link rel="stylesheet" type="text/css" href="api/css/custom.css" />
         <link rel="stylesheet" type="text/css" href="api/css/style.css" />
     </head>
 <body>
@@ -42,10 +42,13 @@
     <!-- container -->
     <main role="main" class="container starter-template">
 
+                <div id="notification" class="notification"></div>
                 <!-- where prompt / messages will appear -->
                 <div id="response"></div>
+                
                 <!-- where main content will appear-->
                 <div id="content"></div>
+                
     </main>
     <!-- /container -->
     
@@ -119,8 +122,6 @@
                         <div class="form-group">
                             <label for="productCategory">Категория</label>
                             <select class="form-control" id="productCategory" name="category_id">
-                                <option value="1">Категория 1</option>
-                                <option value="2">Категория 2</option>
                                 <!-- Добавьте дополнительные категории здесь -->
                             </select>
                         </div>
@@ -209,6 +210,44 @@
             </div>
         </div>
     </div>
+    <!-- Модальное окно для оформления заказа -->
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="orderModalLabel">Оформление заказа</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="order-info-form">
+                <div class="form-group">
+                    <label>Имя пользователя:</label>
+                    <input type="text" class="form-control" id="username" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" class="form-control" id="useremail" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Trade ссылка:</label>
+                    <input type="text" class="form-control" id="trade-link" placeholder="https://steamcommunity.com/tradeoffer/new/?partner=#&token=#"required>
+                </div>
+                <div class="form-group">
+                    <label>Способ оплаты:</label>
+                    <select class="form-control" id="payment-method" required>
+                        <option value="card">Карта</option>
+                        <option value="cash">Наличными</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Оформить заказ</button>
+            </form>
+            <!-- ... -->
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Модальное окно для деталей заказа -->
     <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -232,12 +271,19 @@
             // Обработчик клика для кнопки "Авторизация"
             $(document).on('click', '#authorize', function() {
                 setCookie("jwt", "", 1);
-                // Загрузка содержимого файла authorize.html
+                showAuthorizePage();
+            });
+            // Функция для показа страницы авторизации
+            function showAuthorizePage() {
                 $.get("authorize.html", function(html) {
                     $('#content').html(html);
                     clearResponse();
+                    // Показываем раздел входа и скрываем раздел регистрации
+                    $('#login-section').show();
+                    showLoggedOutMenu();
+                    $('#signup-section').hide();
                 });
-            });
+            }
             // Обработчик клика для переключения на раздел регистрации
             $(document).on('click', '#show_signup', function() {
                 $('#login-section').hide();
@@ -251,7 +297,6 @@
                 $('#login-section').show();
                 showLoggedOutMenu();
             });
-            
             // logout the user
             $(document).on('click', '#logout', function() {
                 // Удаление JWT и других данных пользователя из хранилища
@@ -259,79 +304,10 @@
                 localStorage.removeItem('jwt');
                 localStorage.removeItem('userPhoto');
                 // Показать страницу авторизации
+                showNotification("Вы вышли из аккаунта!", false);
                 showAuthorizePage();
             });
             
-            // Функция для показа страницы авторизации
-            function showAuthorizePage() {
-                $.get("authorize.html", function(html) {
-                    $('#content').html(html);
-                    clearResponse();
-                    // Показываем раздел входа и скрываем раздел регистрации
-                    $('#login-section').show();
-                    showLoggedOutMenu();
-                    $('#signup-section').hide();
-                });
-            }
-            
-            // trigger when registration form is submitted
-            $(document).on('submit', '#sign_up_form', function(){
-                // get form data
-                var sign_up_form=$(this);
-                var form_data=JSON.stringify(sign_up_form.serializeObject());
-                // submit form data to api
-                $.ajax({
-                    url: "api/data/user/create_user.php",
-                    type : "POST",
-                    contentType : 'application/json',
-                    data : form_data,
-                    success : function(result) {
-                        // if response is a success, tell the user it was a successful sign up & empty the input boxes
-                        $('#response').html("<div class='alert alert-success'>Successful sign up. Please login.</div>");
-                        sign_up_form.find('input').val('');
-                    },
-                    error: function(xhr, resp, text){
-                        // on error, tell the user sign up failed
-                        $('#response').html("<div class='alert alert-danger'>Unable to sign up. Please contact admin.</div>");
-                    }
-                });
-                return false;
-            });
-        
-            // trigger when login form is submitted
-            $(document).on('submit', '#login_form', function(e){
-                e.preventDefault(); // Предотвратить стандартную отправку формы
-            
-                var login_form = $(this);
-                var form_data = login_form.serializeObject();
-            
-                // отправить данные формы на сервер
-                $.ajax({
-                    url: "api/data/user/login.php",
-                    type : "POST",
-                    contentType : 'application/json',
-                    data : JSON.stringify(form_data),
-                    success : function(result){
-                        // сохранить jwt в cookie
-                        setCookie("jwt", result.jwt, 1);
-            
-                        // показать домашнюю страницу и сообщить пользователю об успешном входе
-                        showHomePage();
-                        $('#response').html("<div class='alert alert-success'>Successful login.</div>");
-                        
-                        // декодировать JWT и обновить фото профиля
-                        var jwt_data = parseJwt(result.jwt);
-                        if(jwt_data.data.profile_photo) {
-                            $('#profile_photo').attr('src',jwt_data.data.profile_photo);
-                        }
-                    },
-                    error: function(xhr, resp, text){
-                        // в случае ошибки сообщить пользователю о неудачной попытке входа
-                        $('#response').html("<div class='alert alert-danger'>Login failed. Email or password is incorrect.</div>");
-                        login_form.find('input').val('');
-                    }
-                });
-            });
             // функция для декодирования JWT
             function parseJwt(token) {
                 var base64Url = token.split('.')[1];
@@ -379,7 +355,8 @@
                         data : update_account_form,
                         success : function(result) {
                             // Уведомление пользователя об успешном обновлении
-                            $('#response').html("<div class='alert alert-success'>Account was updated.</div>");
+                            //$('#response').html("<div class='alert alert-success'>Account was updated.</div>");
+                            showNotification("Account was updated.", false);
                             $('#editProfileModal').modal('hide');
                             showUpdateAccountForm();
                             
@@ -387,7 +364,8 @@
                         error: function(xhr, resp, text){
                             console.log(resp, text);
                             // Уведомление пользователя об ошибке
-                            $('#response').html("<div class='alert alert-danger'>Unable to update account. Please contact support.</div>");
+                            //$('#response').html("<div class='alert alert-danger'>Unable to update account. Please contact support.</div>");
+                            showNotification("Unable to update account. Please contact support.", true);
                         }
                     });
                 return false;
@@ -496,7 +474,8 @@
                 })
                 .fail(function(result){
                     showAuthorizePage();
-                    $('#response').html("<div class='alert alert-danger'>Please login to access the home page.</div>");
+                    //$('#response').html("<div class='alert alert-danger'>Please login to access the home page.</div>");
+                    showNotification("Please login to access the home page.", true);
                 });
             }
             
@@ -550,7 +529,7 @@
                     },
                     success: function(response) {
                           // Обработка успешного ответа от сервера
-                          alert('Категория успешно добавлена!');
+                          showNotification("Категория успешно добавлена!", false);
                           showHomePage();
                     },
                     error: function(xhr, status, error) {
@@ -578,7 +557,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({ id: categoryId }),
                     success: function(response) {
-                       alert('Категория успешно удалена!'); // Показываем сообщение об успехе
+                       showNotification("Категория успешно удалена!", false); // Показываем сообщение об успехе
                         $('#deleteCategoryModal').modal('hide'); // Закрываем модальное окно
                         showHomePage();
                     },
@@ -727,70 +706,51 @@
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                     var user = result.data;
                     var html = '';
+                    $.get("korzina.html", function(html) {
+                        $('#content').html(html);
+                        // AJAX-запрос к серверу для получения товаров в корзине
+                        $.ajax({
+                            url: 'api/data/korzina/get_cart_items.php', // Путь к вашему серверному скрипту
+                            type: 'POST', // Убедитесь, что метод POST
+                            contentType: 'application/json', // Правильный заголовок Content-Type
+                            data: JSON.stringify({ user_id: user.id }),
+                            dataType: 'json', // Ожидаем ответ в формате JSON
+                            success: function(response) {
+    
+                                var cartTableBody = $('#cart-table tbody');
+                                var totalPriceElement = $('#total-price');
+                                var total = 0;
+                                var itemNumber = 1;
+                                
+                                response.forEach(function(item) {
+                                    total += item.price * item.quantity;
+                                    var rowHtml = `
+                                        <tr>
+                                            <th scope="row">${itemNumber++}</th>
+                                            <td><input type="checkbox" class="cart-item-checkbox" value="${item.cart_item_id}"></td>
+                                            <td><img src="${item.path_photo}" alt="${item.name}" class="img-fluid" style="max-width: 100px;"></td>
+                                            <td>${item.name}</td>
+                                            <td>${item.price} x ${item.quantity}</td>
+                                        </tr>`;
+                                    cartTableBody.append(rowHtml);
+                                });
                     
-                    // AJAX-запрос к серверу для получения товаров в корзине
-                    $.ajax({
-                        url: 'api/data/korzina/get_cart_items.php', // Путь к вашему серверному скрипту
-                        type: 'POST', // Убедитесь, что метод POST
-                        contentType: 'application/json', // Правильный заголовок Content-Type
-                        data: JSON.stringify({ user_id: user.id }),
-                        dataType: 'json', // Ожидаем ответ в формате JSON
-                        success: function(response) {
-
-                            html += '<table class="table">';
-                            html += `
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col"></th>
-                                        <th scope="col">Фото</th>
-                                        <th scope="col">Название</th>
-                                        <th scope="col">Стоимость</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-                            
-                            var total = 0;
-                            var itemNumber = 1;
-                            
-                            response.forEach(function(item) {
-                                total += item.price * item.quantity;
-                                html += `
-                                    <tr>
-                                        <th scope="row">${itemNumber++}</th>
-                                        <td><input type="checkbox" class="cart-item-checkbox" value="${item.cart_item_id}"></td>
-                                        <td><img src="${item.path_photo}" alt="${item.name}" class="img-fluid" style="max-width: 100px;"></td>
-                                        <td>${item.name}</td>
-                                        <td>${item.price} x ${item.quantity}</td>
-                                    </tr>`;
-                            });
-                            
-                            html += '</tbody></table>';
-                            
-                            html += `
-                                <div class="row">
-                                    <div class="col-12">
-                                        <button id="delete-selected-items" class="btn btn-danger">Удалить выбранные товары</button>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-end align-items-center">
-                                        <button type="button" class="btn btn-primary float-right" id="checkoutBtn">Оформить заказ</button>
-                                        <span class="mr-3">Итого: ${total}</span>
-                                    </div>
-                                </div>`;
-                            
-                            $('#content').html(html);
-                        },
-                        error: function(xhr, status, error) {
-                            var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : xhr.responseText;
-                            console.error("Ошибка при получении товаров в корзине: ", errorMessage);
-                        }
+                                totalPriceElement.text(`Итого: ${total}`);
+                            },
+                            error: function(xhr, status, error) {
+                                var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : xhr.responseText;
+                                console.error("Ошибка при получении товаров в корзине: ", errorMessage);
+                            }
+                        });
+                    
+                        
                     });
-            
                     showLoggedInMenu();
                 })// on error/fail, tell the user he needs to login to show the account page
                 .fail(function(result){
                     showAuthorizePage();
-                    $('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
+                    //$('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
+                    showNotification("Please login to access the home page.", true);
                 });
             }
             
@@ -809,7 +769,7 @@
                             if(response.error) {
                                 alert("Ошибка: " + response.error);
                             } else {
-                                alert("Товар добавлен в корзину.");
+                                showNotification("Товар добавлен в корзину.", false); 
                                 // Обновите здесь количество товаров в корзине, если необходимо
                             }
                         },
@@ -841,7 +801,7 @@
                         if(response.error) {
                             alert("Ошибка: " + response.error);
                         } else {
-                            alert("Выбранные товары удалены из корзины.");
+                            showNotification("Выбранные товары удалены из корзины.", false);
                             // Обновляем содержимое корзины
                             showkorzinaPage();
                         }
@@ -853,30 +813,53 @@
             });
             $(document).on('click', '#checkoutBtn', function() {
                 var jwt = getCookie('jwt');
-                var productId = $(this).data('product-id');
+                $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+                    var user = result.data;
+                    // Заполнение формы данными пользователя
+                    $('#username').val(user.firstname + ' ' + user.lastname);
+                    $('#useremail').val(user.email);
+                    // Показываем модальное окно
+                    $('#orderModal').modal('show');
+                }).fail(function(error) {
+                    console.error("Ошибка при получении данных пользователя: ", error);
+                });
+            });
+            // Обработка отправки формы в модальном окне
+            $(document).on('submit', '#order-info-form', function(e) {
+                e.preventDefault();
+                var jwt = getCookie('jwt');
+                var tradeLink = $('#trade-link').val();
+                var paymentMethod = $('#payment-method').val();
+            
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                     var user = result.data;
                     var userId = user.id;
             
+                    // Отправляем данные на сервер для оформления заказа
                     $.ajax({
                         url: 'api/data/korzina/process_order.php',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({ user_id: userId }),
+                        data: JSON.stringify({
+                            user_id: userId,
+                            trade_link: tradeLink,
+                            payment_method: paymentMethod
+                        }),
                         success: function(response) {
-                            if(response.error) {
-                                alert("Ошибка: " + response.error);
-                            } else {
-                                alert("Заказ успешно оформлен.");
-                                // Здесь можно обновить страницу или перенаправить пользователя
-                                showHomePage();
-                                $('#response').html("<div class='alert alert-success'>Ваш заказ сформирован.</div>");
-                            }
+                            // Обработка успешного оформления заказа
+                            showNotification("Заказ успешно оформлен.", false);
+                            $('#orderModal').modal('hide');
+                            showHomePage();
+                            //$('#response').html("<div class='alert alert-success'>Ваш заказ сформирован.</div>");
+                            showNotification("Ваш заказ сформирован.", false);
                         },
                         error: function(xhr, status, error) {
+                            // Обработка ошибки оформления заказа
                             alert("Произошла ошибка при оформлении заказа.");
                         }
                     });
+                }).fail(function(error) {
+                    console.error("Ошибка при валидации пользователя: ", error);
                 });
             });
             
@@ -933,7 +916,8 @@
                 // on error/fail, tell the user he needs to login to show the account page
                 .fail(function(result){
                     showAuthorizePage();
-                    $('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
+                    //$('#response').html("<div class='alert alert-danger'>Please login to access the account page.</div>");
+                    showNotification("Please login to access the account page.", true);
                 });
             }
             $('#editProfileModal').on('shown.bs.modal', function() {
@@ -1059,7 +1043,7 @@
                         if(response.error) {
                             alert("Ошибка: " + response.error);
                         } else {
-                            alert("Статус заказа обновлен.");
+                            showNotification("Статус заказа обновлен.", false);
                             getAllOrders(); // Перезагрузить список заказов
                         }
                     },
@@ -1126,7 +1110,21 @@
                 $('#orderDetailsModal').modal('show');
             } 
             
+            function showNotification(message, isError) {
+                var notification = $('#notification');
+                notification.text(message).removeClass('error');
             
+                if (isError) {
+                    notification.addClass('error');
+                }
+            
+                notification.fadeIn(500, function() {
+                    // Уведомление исчезнет через 5 секунд
+                    setTimeout(function() {
+                        notification.fadeOut(500);
+                    }, 5000);
+                });
+            }
             // function to make form values to json format
             $.fn.serializeObject = function(){
                 var o = {};

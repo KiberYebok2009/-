@@ -13,6 +13,11 @@
         exit;
     }
     
+    // Добавляем новые параметры
+    $trade_link = isset($data->trade_link) ? $data->trade_link : "";
+    $payment_method = isset($data->payment_method) ? $data->payment_method : "";
+
+    
     $user_id = $data->user_id;
     $total = 0;
     
@@ -30,11 +35,13 @@
             $total += $item['price'] * $item['quantity'];
         }
     
-        // Создаем заказ с рассчитанной общей стоимостью
-        $query = "INSERT INTO orders (user_id, total, order_date, status) VALUES (:user_id, :total, NOW(), 'processing')";
+        // Создаем заказ с рассчитанной общей стоимостью и новыми данными
+        $query = "INSERT INTO orders (user_id, total, order_date, status, trade_link, payment_method) VALUES (:user_id, :total, NOW(), 'processing', :trade_link, :payment_method)";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':total', $total);
+        $stmt->bindParam(':trade_link', $trade_link);
+        $stmt->bindParam(':payment_method', $payment_method);
         $stmt->execute();
         $order_id = $db->lastInsertId();
     
