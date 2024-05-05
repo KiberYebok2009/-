@@ -231,6 +231,11 @@ body{
     pointer-events: none;
 }
 
+img{
+    width: 150px;
+    height: 150px;
+}
+
 .wrapper.active .info-text.register{
     pointer-events: auto;
 }
