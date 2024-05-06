@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html >
 <html lang="en">
     <head>
         <!-- Required meta tags -->
@@ -7,8 +7,8 @@
         <title>Rest API Authentication Example</title>
         <!-- Bootstrap 4 CSS and custom CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="api/css/custommmm.css" />
-        <link rel="stylesheet" type="text/css" href="api/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/custom.css?1" />
+        <link rel="stylesheet" type="text/css" href="css/style.css?1" />
     </head>
 <body>
     <!-- jQuery & Bootstrap 4 JavaScript libraries -->
@@ -278,32 +278,16 @@
             });
             // Функция для показа страницы авторизации
             function showAuthorizePage() {
-                $.get("authorize.html", function(html) {
+                $.get("Pages/authorize.html", function(html) {
                     $('#content').html(html);
                     clearResponse();
                     // Показываем раздел входа и скрываем раздел регистрации
-                    $('#login-section').show();
+                    
                     showLoggedOutMenu();
-                    $('#signup-section').hide();
+                    
                 });
             }
             
-            //авторизации
-            /* Для Дефолтной страницы authorize_defolt
-            // Обработчик клика для переключения на раздел регистрации
-            $(document).on('click', '#show_signup', function() {
-                $('#login-section').hide();
-                showLoggedOutMenu();
-                $('#signup-section').show();
-            });
-            
-            // Обработчик клика для переключения обратно на раздел входа
-            $(document).on('click', '#show_login', function() {
-                $('#signup-section').hide();
-                $('#login-section').show();
-                showLoggedOutMenu();
-            });
-            */
             // trigger when registration form is submitted
             $(document).on('submit', '#sign_up_form', function(){
                 // get form data
@@ -365,8 +349,6 @@
                     }
                 });
             });
-            //\авторизации
-            
             
             // logout the user
             $(document).on('click', '#logout', function() {
@@ -492,7 +474,7 @@
                     showLoggedOutMenu();
                 });
             
-                $('#content').load('homepage.html', function() {    
+                $('#content').load('Pages/homepage.html', function() {    
                         $('#filterForm').submit(function(e) {
                             e.preventDefault();
                             var selectedCategory = $('#categoryId').val();
@@ -783,7 +765,7 @@
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
                     var user = result.data;
                     var html = '';
-                    $.get("korzina.html", function(html) {
+                    $.get("Pages/korzina.html", function(html) {
                         $('#content').html(html);
                         // AJAX-запрос к серверу для получения товаров в корзине
                         $.ajax({
