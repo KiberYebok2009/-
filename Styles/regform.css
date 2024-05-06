@@ -13,17 +13,17 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #081b29;
+    background-image: url('../Img/solnishko1080.jpg');
 }
 
 .wrapper{
     position: relative;
     width: 750px;
     height: 450px;
-    background: transparent;
-    border: 2px solid #0ef;
+    background: #081b29;
+    border: 2px solid #9951FF;
     overflow: hidden;
-    box-shadow: 0 0 25px #0ef;
+    box-shadow: 0 0 25px #E26EE5;
 }
 
 .wrapper .form-box{
@@ -110,7 +110,7 @@ body{
 
 .input-box input:focus,
 .input-box input:valid{
-    border-bottom-color: #0ef;
+    border-bottom-color: #E26EE5;
 }
 
 .input-box label{
@@ -127,7 +127,7 @@ body{
 .input-box input:focus~label,
 .input-box input:valid~label{
     top: -5px;
-    color: #0ef;
+    color: #E26EE5;
 }
 
 .input-box i{
@@ -142,7 +142,7 @@ body{
 
 .input-box input:focus~i,
 .input-box input:valid~i{
-    color: #0ef;
+    color: #E26EE5;
 }
 
 .butt{
@@ -150,7 +150,8 @@ body{
     width: 100%;
     height: 45px;
     background: transparent;
-    border: 2px solid #0ef;
+    border: 2px solid #9951FF;
+    box-shadow: 0 0 15px #E26EE5;
     outline: none;
     border-radius: 40px;
     cursor: pointer;
@@ -169,7 +170,7 @@ body{
     width: 100%;
     height: 300%;
     z-index: -1;
-    background: linear-gradient(#081b29, #0ef, #081b29, #0ef);
+    background: linear-gradient(#081b29, #9951FF, #081b29, #9951FF);
     transition: .5s;
 }
 
@@ -185,7 +186,7 @@ body{
 }
 
 .logreg-link p a{
-    color: #0ef;text-decoration: none;
+    color: #9951FF;text-decoration: none;
     font-weight: 600;
 }
 
@@ -205,7 +206,8 @@ body{
 
 .wrapper .info-text.login{
     right: 0;
-    text-align: right;
+    text-align: center;
+    align-items: center;
     padding: 0 40px 60px 150px;
 }
 
@@ -226,7 +228,8 @@ body{
 
 .wrapper .info-text.register{
     left: 0;
-    text-align: left;
+    text-align: center;
+    align-items: center;
     padding: 0 150px 60px 40px;
     pointer-events: none;
 }
@@ -273,8 +276,8 @@ img{
     right: 0;
     width: 850px;
     height: 600px;
-    background: linear-gradient(45deg, #081b29, #0ef);
-    border-bottom: 3px solid #0ef;
+    background: linear-gradient(45deg, #081b29, #9951FF);
+    border-bottom: 3px solid #9951FF;
     transform: rotate(10deg) skewY(40deg);
     transform-origin: bottom right;
     transition: 1.5s ease;
@@ -293,7 +296,7 @@ img{
     width: 850px;
     height: 700px;
     background: #081b29;
-    border-top: 3px solid #0ef;
+    border-top: 3px solid #9951FF;
     transform: rotate(0) skewY(0);
     transform-origin: bottom left;
     transition: 1.5s ease;
@@ -303,4 +306,26 @@ img{
 .wrapper.active .bg-animate2{
     transform: rotate(-11deg) skewY(-41deg);
     transition-delay: 1.2s;
+}
+
+@media screen and (max-width: 376px){
+    .wrapper .info-text.login{
+        padding: 0 40px 60px 20px;
+    }
+
+    .wrapper .info-text.register{
+        padding: 0 50px 60px 40px;
+    }
+
+    .form-box .input-box{
+        height: 30px;
+    }
+
+    .wrapper .form-box.register{
+        padding: 0 40px 0 40px;
+    }
+
+    .wrapper .form-box.login{
+        padding: 0 40px 0 40px;
+    }
 }
