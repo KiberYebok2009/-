@@ -13,7 +13,12 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('../Img/solnishko1080.jpg');
+    background-image: url(../Img/solnishko1080.jpg);
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .wrapper{
@@ -308,7 +313,8 @@ img{
     transition-delay: 1.2s;
 }
 
-@media screen and (max-width: 376px){
+/* Стили для экранов шириной до 414px (например, iPhone 6/7/8 Plus) */
+@media screen and (max-width: 600px){
     .wrapper .info-text.login{
         padding: 0 40px 60px 20px;
     }
@@ -323,6 +329,16 @@ img{
 
     .wrapper .form-box.register{
         padding: 0 40px 0 40px;
+    }
+
+    .wrapper .form-box.login{
+        padding: 0 40px 0 40px;
+    }
+}
+
+@media screen and (max-width: 360px){
+    .wrapper .form-box.register{
+        padding: 0 40px 0 20px;
     }
 
     .wrapper .form-box.login{
