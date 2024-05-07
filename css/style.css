@@ -1,0 +1,460 @@
+:root{
+    --width-size: calc(10vw + 10vw);
+    --icon-height-size: calc(12vw + 12vw);
+    --font-size: calc(1vw + 1vw);
+}
+*{
+    cursor:url("../images/artem/emblem_32x32.png") 16 16,pointer;
+}
+body{
+    margin: 0px;
+    background-color:white;
+    width: 100vw;
+}
+/* ----------------------------------------- header theme */
+.first1{
+    background-color: #7A08FA;
+    margin: 20px ;
+    border-radius: 10px;
+    border: solid black calc(var(--font-size)*0.17);
+}
+.second1{
+    background-color: red;
+    margin: 20px ;
+    border-radius: 10px;
+    border: solid white calc(var(--font-size)*0.17);
+}
+/* ------------------------------------------------ */
+
+/* ----------------------------------------- Навигационная панель */ 
+.header-line{
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+.nav{
+    text-decoration: none;
+    color: black;
+    margin-right: 2vw;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Oswald', sans-serif;
+    transition: 1s;
+}
+.nav:hover{
+    color:white;
+}
+/* ----------------------------------------- Лого - Кнопка для смены темы */ 
+.abtn{
+    background: transparent;
+    border: none !important;
+    font-size:0;
+}
+.logo{
+    height: 60px;
+    width: 60px;
+    margin-right: 2vw;
+}
+/* ---------------------------------------------------------------------- */ 
+.cart-icon{
+    height: 50px;
+    width: 50px;
+}
+/* .registration{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    margin-right: 5vw;
+    background-color: white;
+    padding:10px;
+    border-radius: 10px;
+    border-color: black;
+    font-weight: 500;
+    font-family: 'Comfortaa', cursive;
+    margin-left: 82%;
+    position: absolute;
+}
+.enter{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    background-color: white;
+    padding:10px;
+    border-radius: 10px;
+    border-color: black;
+    font-weight: 500;
+    font-family: 'Comfortaa', cursive;
+    margin-left: 76%;
+    position: absolute;
+} */
+/* -------------------------------------------------------------- */
+
+/* ----------------------------------------- Товары */ 
+.packages{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+    padding-right: 4vw;
+    padding-left: 3vw;
+    gap: 10px;
+    top: 10px;
+    margin-bottom:30px;
+    margin-right: 20px;
+    margin-left: 15px;
+    text-align: center;
+}
+.first4{
+    color:black;
+    background-color: white;
+    height: calc(var(--height-size)*0.75);
+    width: calc(var(--width-size)*0.7);
+    border-radius: 10px;
+    transition: 1s;
+    margin-top: 20px;
+    border: solid black calc(var(--font-size)*0.17);
+    text-align: center;
+}
+.second4{
+    color:black;
+    background-image: url('../images/disguise3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: calc(var(--height-size)*0.75);
+    width: calc(var(--width-size)*0.7);
+    border-radius: 10px;
+    transition: 1s;
+    margin-top: 20px;
+    border: solid white calc(var(--font-size)*0.17);
+    text-align: center;
+}
+.package:hover{
+    transform: scale(1.1);
+}
+.product-icon{
+    height: calc(var(--icon-height-size)*0.5);
+    width: calc(var(--width-size)*0.6);
+    margin: 10px;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    border: solid #7A08FA 0px;
+}
+.name-product{
+    text-align: center;
+    font-weight: 400;
+    font-size: calc(var(--font-size)*0.6);
+    height: calc(var(--width-size)*0.15);
+    margin-top: 5px;
+    margin-bottom: calc(var(--width-size)*0.07);
+    font-family: 'Agbalumo', cursive;
+}
+.price-product{
+    text-align: left;
+    font-weight: 700;
+    font-size: calc(var(--font-size)*0.5);
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 3px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    width: calc(var(--width-size)*0.8);
+}
+.but{
+    background: transparent;
+    border: none !important;
+    text-align: center;
+    height: 25px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.empty{
+    color:black;
+    background-color: white;
+    height: calc(var(--icon-height-size)*0.7);
+    width: calc(var(--width-size)*0.8);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    margin-left: 10px;
+    padding: 0px;
+    margin-top: 20px;
+    /* margin-left: 200px; */
+}
+.empty-icon{
+    height: calc(var(--icon-height-size)*0.7);
+    width: calc(var(--width-size)*0.8);
+    border: solid black calc(var(--font-size)*0.2);
+    margin-right: calc(var(--width-size)*0.1);
+    border-radius: 10px;
+}
+.price-empty{
+    text-align: left;
+    font-weight: 700;
+    font-family: 'Oswald', sans-serif;
+    font-size: calc(var(--font-size)*1);
+    margin-top: 0px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    text-align: left;
+}
+.empty-name{
+    text-align: left;
+    font-weight: 700;
+    width: calc(var(--width-size)*2);
+    font-size: calc(var(--font-size)*1);
+    margin-top: 5px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    font-family: 'Oswald', sans-serif;
+}
+.item-line{
+    display: flex;
+    text-align: center;
+    width: 800px;
+}
+.rare{
+    text-align: left;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: calc(var(--font-size)*1);
+    margin-left: 5px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    color: blueviolet;
+}
+.rar{
+    text-align: left;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: calc(var(--font-size)*1);
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+.treasure{
+    text-align: left;
+    width: calc(var(--width-size)*2);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: calc(var(--font-size)*1);
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+.data{
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: calc(var(--font-size)*1);
+}
+.grid{
+    width: 400px;
+}
+/* ------------------------------------------------ */ 
+
+/* ----------------------------------------- main theme */
+.first2{
+    background-color: #7A08FA;
+    margin: 20px ;
+    border-radius: 10px;
+    padding-bottom:40px;
+    border: solid black calc(var(--font-size)*0.17);
+}
+.second2{
+    background-color: red;
+    margin: 20px ;
+    border-radius: 10px;
+    padding-bottom:40px;
+    border: solid white calc(var(--font-size)*0.17);
+}
+/* ---------------------------------------------------- */
+a{
+    text-decoration: none;
+}
+h1{
+    text-align: center;
+    padding-top: 30px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+}
+/* ----------------------------------------- footer theme */
+.first3{
+    background-color: #7A08FA;
+    margin: 20px ;
+    border-radius: 10px;
+    height: 150px;
+    border: solid black calc(var(--font-size)*0.17);
+}
+.second3{
+    background-color: red;
+    margin: 20px ;
+    border-radius: 10px;
+    height: 150px;
+    border: solid white calc(var(--font-size)*0.17);
+}
+/* ------------------------------------------------------ */
+.list, li{
+    padding-top: 10px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-family: 'Oswald', sans-serif;
+}
+.list, a{
+    color: black;
+    text-decoration: none;
+}
+html{
+    scroll-behavior: smooth;
+}
+html::-webkit-scrollbar{
+    width:0px;
+}
+@media screen and (max-width: 1150px) {
+    .packages{
+        grid-template-columns: repeat(4, 25%);
+        padding-right: 4vw;
+        padding-left: 4vw;
+    }
+    .package{
+        height: calc(var(--height-size)*0.8);
+        width: calc(var(--width-size)*0.8);
+        padding: 10px;
+    }
+    .product-icon{
+        height: calc(var(--icon-height-size)*0.5);
+        width: calc(var(--width-size)*0.6);
+    }
+    .name-product{
+        font-size: calc(var(--font-size)*0.7);
+        height: calc(var(--width-size)*0.25);
+        margin-bottom: calc(var(--width-size)*0.01);
+    }
+    .price-product{
+        font-size: calc(var(--font-size)*0.7);
+    }
+    .empty-icon{
+        height: calc(var(--icon-height-size)*0.7);
+        width: calc(var(--width-size)*0.8);
+    }
+    .empty-name{
+        font-size: calc(var(--font-size)*1);
+    }
+    .item-line{
+        width: 500px;
+    }
+    .empty{
+        height: calc(var(--icon-height-size)*0.7);
+        width: calc(var(--width-size)*0.8);
+    }
+    .price-empty{
+        font-size: calc(var(--font-size)*1);
+    }
+    .rare{
+        font-size: calc(var(--font-size)*1);
+    }
+    .rar{
+        font-size: calc(var(--font-size)*1);
+    }
+    .treasure{
+        font-size: calc(var(--font-size)*1);
+    }
+    .data{
+        font-size: calc(var(--font-size)*1);
+    }
+    .grid{
+        width: 240px;
+    }
+    .item-line{
+        width: calc(var(--width-size)*3);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .nav{
+        font-size: calc(var(--font-size)*1.5);
+    }
+    .cart-icon{
+        height: calc(var(--height-size)*0.3);
+        width: calc(var(--width-size)*0.3);
+    }
+    .packages{
+        grid-template-columns: repeat(3, 33%);
+        padding-right: 4vw;
+        padding-left: 4vw;
+    }
+    .package{
+        height: calc(var(--height-size)*1.1);
+        width: calc(var(--width-size)*1.1);
+        padding: 10px;
+    }
+    .product-icon{
+        height: calc(var(--icon-height-size)*0.8);
+        width: calc(var(--width-size)*0.9);
+    }
+    .name-product{
+        font-size: calc(var(--font-size)*0.9);
+        height: calc(var(--width-size)*0.25);
+        margin-bottom: calc(var(--width-size)*0.01);
+    }
+    .price-product{
+        font-size: calc(var(--font-size)*0.9);
+        width: calc(var(--width-size)*1);
+    }
+    .empty-icon{
+        height: calc(var(--icon-height-size)*0.7);
+        width: calc(var(--width-size)*0.8);
+    }
+    .empty-name{
+        font-size: calc(var(--font-size)*1);
+    }
+    .item-line{
+        width: 500px;
+    }
+    .empty{
+        height: calc(var(--icon-height-size)*0.7);
+        width: calc(var(--width-size)*0.8);
+    }
+    .price-empty{
+        font-size: calc(var(--font-size)*1);
+    }
+    .rare{
+        font-size: calc(var(--font-size)*1);
+    }
+    .rar{
+        font-size: calc(var(--font-size)*1);
+    }
+    .treasure{
+        font-size: calc(var(--font-size)*1);
+    }
+    .data{
+        font-size: calc(var(--font-size)*1);
+    }
+    .grid{
+        width: 240px;
+    }
+    .item-line{
+        width: calc(var(--width-size)*3);
+    }
+}
+/* Модальный (фон) */
+  
+  /* Кнопка закрытия */
+.close {
+    
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+  
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+    /* Модальный заголовок */
+
+  
+  /* Добавить анимация */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 100px; opacity: 1}
+}

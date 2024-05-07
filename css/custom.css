@@ -1,0 +1,31 @@
+/* Стили для изображения профиля */
+.profile-image {
+    width: 30px; /* Установите желаемый размер изображения */
+    height: 30px;
+    border-radius: 50%; /* Делает изображение круглым */
+    margin-right: 10px; /* Добавляет отступ справа от изображения */
+}
+
+body { padding-top: 5rem; }
+.starter-template { padding: 6rem 1.5rem; }
+#logout{ display:none; }
+
+.notification {
+    display: none; /* Скрыть уведомление по умолчанию */
+    position: fixed; /* Фиксированное позиционирование */
+    top: 10%;
+    left: 50%; /* Расположение по горизонтали */
+    transform: translate(-50%, -50%); /* Центрирование уведомления */
+    padding: 20px; /* Внутренние отступы */
+    background-color: #dff0d8; /* Светло-зеленый фон */
+    color: #3c763d; /* Темно-зеленый текст */
+    z-index: 1000; /* Убедитесь, что уведомление будет поверх других элементов */
+    border-radius: 5px; /* Скругленные углы */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Тень для эффекта "всплывающего" окна */
+    min-width: 300px; /* Минимальная ширина */
+    text-align: center; /* Выравнивание текста по центру */
+}
+.notification.error {
+    background-color: #f2dede; /* Светло-красный фон */
+    color: #a94442; /* Темно-красный текст */
+}
