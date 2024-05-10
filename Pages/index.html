@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallax Website</title>
+    <link rel="stylesheet" href="../Styles/style.css">
+    <link rel="stylesheet" href="../Styles/nav.css">
+    <link rel="stylesheet" href="../Styles/card.css">
+</head>
+<body>
+
+    <header>
+        <!-- <h1>Logo</h1>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </nav> -->
+        <nav>
+            <ul class="mobile">
+                <li class="first" onclick=hideMobile()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+                <li><a href="#">Main</a></li>
+                <li><a href="#">Cart</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Sign-Out</a></li>
+            </ul>
+
+            <ul>
+                <div class="left">
+                    <li><a href="#">Logo</a></li>
+                    <li class="hideOnMobile"><a href="#">Main</a></li>
+                </div>
+                <li class="hideOnMobile"><a href="#">Cart</a></li>
+                <li class="hideOnMobile"><a href="#">Profile</a></li>
+                <li class="hideOnMobile"><a href="#">Sign-Out</a></li>
+                <li class="menu-button" onclick=showMobile()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="home">
+        <img src="../Img/assets/mount2.png" class="mount2">
+        <img src="../Img/assets/mount1.png" class="mount1">
+        <img src="../Img/assets/bush2.png" class="bush2">
+
+        <h1 class="title">Parallax</h1>
+
+        <img src="../Img/assets/bush1.png" class="bush1">
+        <img src="../Img/assets/leaf2.png" class="leaf2">
+        <img src="../Img/assets/leaf1.png" class="leaf1">
+    </section>
+
+    <section class="catalog">
+        <h1>Catalog</h1>
+        <div class="card-container">
+            <div class="card">
+                <img src="../Img/products/Phantom Assassin-Darkfeather Factioneer.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Phantom Assassin: Darkfeather Factioneer</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Alchemist-Darkbrew`s Transgression.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Alchemist: Darkbrew`s Transgression</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Anti-Mage-Brands of the Reaper.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Anti-Mage: Brands of the Reaper</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Brewmaster-The Wilding Tiger.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Brewmaster: The Wilding Tiger</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/chen-Hounds of Obsession.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Chen: Hounds of Obsession</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/clockwerk-Seadog's Stash.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Clockwerk: Seadog's Stash</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Doom-Dawn of a Darkness Foretold.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Doom: Dawn of a Darkness Foretold</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/faceless void-Chines of the Inquisitor.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Faceless void: Chines of the Inquisitor</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/hoodwink-Shadowleaf Insurgent.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Hoodwink: Shadowleaf Insurgent</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Huskar-Sacred Chamber Guardian.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Huskar: Sacred Chamber Guardian</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/marci-Blue Horizons.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Marci: Blue Horizons</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Ogre Magi-Freeboot Fortunes.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Ogre Magi: Freeboot Fortunes</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Oracle-Transcendent Path.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Oracle: Transcendent Path</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Phoenix-Crimson Dawn.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Phoenix: Crimson Dawn</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Pudge-Cursed Cryptbreaker.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Pudge: Cursed Cryptbreaker</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/riki-Scarlet Subversion.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Riki: Scarlet Subversion</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Silencer-Grand Suppressor.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Silencer: Grand Suppressor</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/snapfire-Whippersnapper.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Snapfire: Whippersnapper</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/spectre-Spoils of the Shadowveil.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Spectre: Spoils of the Shadowveil</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Terrorblade-Forgotten Station.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Terrorblade: Forgotten Station</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Undying-Dirge Amplifier.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Undying: Dirge Amplifier</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/ursa-Trophies of hallowed Hunt.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Ursa: Trophies of hallowed Hunt</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Vengeful Spirit-Acrimonies of Obsession.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Vengeful Spirit: Acrimonies of Obsession</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="../Img/products/Witch Doctor-Deathstitch Shaman.jpeg" alt="">
+                <div class="card-content">
+                    <div class="card-info">
+                        <p>Witch Doctor: Deathstitch Shaman</p>
+                        <p class="collection">Коллекция: Collector`s Cache 2022 II</p>
+                    </div>
+                    
+                    <div class="price-info">
+                        <p>1000 ₽</p>
+                        <button>В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="../Scripts/mobile.js"></script>
+
+</body>
+</html>
