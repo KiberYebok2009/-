@@ -6,9 +6,15 @@
     margin-right: 10px; /* Добавляет отступ справа от изображения */
 }
 
-body { padding-top: 5rem; }
+body{
+    display: flex; /* Устанавливает flex контейнер */
+}
 .starter-template { padding: 6rem 1.5rem; }
 #logout{ display:none; }
+
+*{
+    cursor:url("../api/images/artem/emblem_32x32.png") 16 16,pointer;
+}
 
 .notification {
     display: none; /* Скрыть уведомление по умолчанию */

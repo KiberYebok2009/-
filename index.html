@@ -4,11 +4,11 @@
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Rest API Authentication Example</title>
-        <!-- Bootstrap 4 CSS and custom CSS! -->
+        <title>Dota 2</title>
+        <!-- Bootstrap 4 CSS and custom CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="css/custom.css?1" />
-        <link rel="stylesheet" type="text/css" href="css/style.css?1" />
+        <link rel="stylesheet" type="text/css" href="css/custom.css?22" />
+        <link rel="stylesheet" href="css/regform.css?2222">
     </head>
 <body>
     <!-- jQuery & Bootstrap 4 JavaScript libraries -->
@@ -28,6 +28,7 @@
                 <a class="nav-item nav-link" href="#" id='home'>Главная</a>
             </div>
             <div class="navbar-nav ml-auto">
+                <!--<button id="theme-toggle">Сменить тему</button>-->
                 <a class="nav-item nav-link" href="#" id='korzina'>Корзина</a>
                 
                 <a class="nav-item nav-link" href="#" id='update_account' value="Профиль"><img src="" href="#" alt="Профиль" style="display: none; width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;" id='profile_photo' /></a>
@@ -282,8 +283,8 @@
                     $('#content').html(html);
                     clearResponse();
                     // Показываем раздел входа и скрываем раздел регистрации
-                    
                     showLoggedOutMenu();
+                    $('body').addClass('bodywraper');
                     
                 });
             }
@@ -454,6 +455,8 @@
             //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
             // show home page
             function showHomePage(categoryId = '') {
+                $('body').removeClass('bodywraper');
+                $('body').removeClass('specific-page');
                 var jwt = getCookie('jwt');
                 var user;
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
@@ -760,6 +763,8 @@
             //<---------------------------------------------------------------------------------------Korzina Page--------------------------------------------------------------------------------------->
             // show korzina page
             function showkorzinaPage() {
+                $('body').removeClass('bodywraper');
+                $('body').removeClass('specific-page');
                 // validate jwt to verify access
                 var jwt = getCookie('jwt');
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
@@ -949,6 +954,8 @@
 
             var globalUserData = null;
             function showUpdateAccountForm(){
+                $('body').removeClass('bodywraper');
+                $('body').removeClass('specific-page');
                 // validate jwt to verify access
                 var jwt = getCookie('jwt');
                 $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
@@ -1172,7 +1179,7 @@
                 $('#order-details-container').html(detailsHtml);
                 // Показываем модальное окно или контейнер
                 $('#orderDetailsModal').modal('show');
-            } 
+            }
             
             function showNotification(message, isError) {
                 var notification = $('#notification');
