@@ -18,6 +18,32 @@ nav ul{
 nav li{
     height: 50px;
     font-weight: 500;
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fefefe;
+    position: relative;
+    transition: color 0.25s;
+}
+
+nav a:hover{
+    color: #3B3291;
+}
+  
+nav li::after{
+    position: absolute;
+    content: "";
+    inset: 0;
+    background-color: #fefefe;
+    scale: 1 0;
+    z-index: -1;
+    transition: 0.45s;
+    border-radius: 10px;
+}
+
+nav li:hover::after{
+    scale: 1 1;
 }
 
 .left{
@@ -27,16 +53,22 @@ nav li{
 
 nav a{
     height: 100%;
-    padding: 0 30px;
+    padding: 0 10px;
     text-decoration: none;
     display: flex;
     align-items: center;
     color: #fff;
 }
 
-/* nav a:hover{
-    background: black;
-} */
+.nav-logo{
+    padding: 0;
+    margin: 10px 10px;
+}
+
+.hideOnMobile{
+    padding: 0;
+    margin: 10px 10px;
+}
 
 nav li:first-child{
     margin-right: auto;
