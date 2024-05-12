@@ -117,4 +117,15 @@ nav li:first-child{
         display: block;
     }
 
+    .menu-button::after{
+        position: absolute;
+        content: "";
+        inset: 0;
+        background-color: transparent;
+        scale: 1 0;
+        z-index: -1;
+        transition: 0.45s;
+        border-radius: 10px;
+    }
+
 }
