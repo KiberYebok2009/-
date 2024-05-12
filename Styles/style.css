@@ -73,3 +73,9 @@ html{
 html::-webkit-scrollbar{
     width:0px;
 }
+
+@media(max-width: 376px){
+    .catalog{
+        padding: 20px;
+    }
+}
