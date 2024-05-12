@@ -23,12 +23,16 @@ document.addEventListener('scroll', function() {
 
 function showMobile(){
     const mobile = document.querySelector('.mobile');
+    const menu = document.querySelector('.menu-button');
     mobile.style.display = 'flex';
+    menu.style.display = 'none';
 }
 
 // Закрытие мобильной панели
 
 function hideMobile(){
     const mobile = document.querySelector('.mobile');
+    const menu = document.querySelector('.menu-button');
     mobile.style.display = 'none';
+    menu.style.display = 'block';
 }
