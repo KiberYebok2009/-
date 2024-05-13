@@ -27,6 +27,16 @@ nav li{
     transition: color 0.25s;
 }
 
+nav:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
 nav a:hover{
     color: #3B3291;
 }
@@ -94,6 +104,7 @@ nav li:first-child{
     position: absolute;
     width: 100%;
     height: 100%;
+    z-index: -1;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
