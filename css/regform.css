@@ -3,16 +3,21 @@
 
 
 .bodywraper{
+    display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url(../img/solnishko.jpg);
+    background-image: url(../img/Registration/solnishko.jpg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin: 0;
     padding-top: 5rem;
     box-sizing: border-box;
     overflow: hidden;
+}
+.container {
+    padding-right: 0;
+    padding-left: 0;
 }
 .bodywraper h2, 
 .bodywraper label, 
@@ -24,6 +29,7 @@
 .wrapper{
     position: relative;
     height: 450px;
+    width: 750px;
     background: #081b29;
     border: 2px solid #9951FF;
     overflow: hidden;
@@ -330,9 +336,8 @@
     .wrapper .form-box.register{
         padding: 0 40px 0 40px;
     }
-
-    .wrapper .form-box.login{
-        padding: 0 40px 0 40px;
+    .wrapper {
+        width: 700px;
     }
 }
 
@@ -353,8 +358,11 @@
     .wrapper .info-text.register{
         padding: 0 50px 60px 40px;
     }
+    .wrapper {
+        width: 360px;
+    }
 }
-@media screen and (min-width: 990px){
+@media screen and (min-width: 1000px){
 
     .wrapper {
         width: 750px;

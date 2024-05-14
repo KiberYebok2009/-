@@ -6,14 +6,22 @@
     margin-right: 10px; /* Добавляет отступ справа от изображения */
 }
 
-body{
-    display: flex; /* Устанавливает flex контейнер */
-}
 .starter-template { padding: 6rem 1.5rem; }
-#logout{ display:none; }
-
+.starter-template2{
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+}
+.filterFormcss{
+    display: flex;
+    flex-direction: column;
+}
 *{
     cursor:url("../api/images/artem/emblem_32x32.png") 16 16,pointer;
+}
+.catalog-background{
+    background: #3B3291;
 }
 
 .notification {

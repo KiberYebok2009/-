@@ -5,10 +5,13 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>Dota 2</title>
-        <!-- Bootstrap 4 CSS and custom CSS -->
+        <!-- Bootstrap 4 CSS and custom CSS --> 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="css/custom.css?22" />
-        <link rel="stylesheet" href="css/regform.css?2222">
+        <link rel="stylesheet" href="css/nav.css?222222322">
+
+        <link rel="stylesheet" type="text/css" href="css/custom.css?33" />
+        <link rel="stylesheet" href="css/regform.css?44">
+        <link rel="stylesheet" href="css/style.css?11">
     </head>
 <body>
     <!-- jQuery & Bootstrap 4 JavaScript libraries -->
@@ -18,39 +21,54 @@
     <!-- jQuery & Bootstrap 4 JavaScript libraries -->
     
     <!-- navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">Скины Дота2</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#" id='home'>Главная</a>
-            </div>
-            <div class="navbar-nav ml-auto">
-                <!--<button id="theme-toggle">Сменить тему</button>-->
-                <a class="nav-item nav-link" href="#" id='korzina'>Корзина</a>
-                
-                <a class="nav-item nav-link" href="#" id='update_account' value="Профиль"><img src="" href="#" alt="Профиль" style="display: none; width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;" id='profile_photo' /></a>
-                <a class="nav-item nav-link" href="#" id='logout'>Выход</a>
-                
-                <a class="nav-item nav-link" href="#" id='authorize'>Авторизация</a>
-            </div>
-        </div>
-    </nav>
+    <header> 
+        <nav>
+            <ul class="mobile">
+                <li class="first" onclick=hideMobile()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+                <li><a href="#" id='home' class='home-link' >Главная</a></li>
+                <li><a href="#" id='korzina' class='cart-link'>Корзина</a></li>
+                <li class='profile-link-mobile'><a href="#" id='update_account' value="Профиль">Профиль</a></li>
+                <li class='auth-link-mobile'><a href="#" id='authorize'>Авторизация</a></li>
+                <li class='logout-link-mobile'><a href="#" id='logout'>Выход</a></li>
+            </ul>
+
+            <ul>
+                <div class="left">
+                    <li class="nav-logo"><a href="#">Logo</a></li>
+                    <li class="hideOnMobile"><a href="#" id='home' class='home-link'>Главная</a></li>
+                </div>
+                <li class="hideOnMobile"><a href="#" id='korzina' class='cart-link'>Корзина</a></li>
+                <li class="hideOnMobile profile-link"><a href="#" id='update_account' value="Профиль">Профиль</a></li>
+                <li class="hideOnMobile auth-link"><a href="#" id='authorize' >Авторизация</a></li>
+                <li class="hideOnMobile logout-link" ><a href="#" id='logout'>Выход</a></li>
+                <li class="menu-button" onclick=showMobile()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+            </ul>
+        </nav>
+    </header>
     <!-- /navbar -->
+    <section class="home">
+        <img src="img/assets/mount2.png" class="mount2">
+        <img src="img/assets/mount1.png" class="mount1">
+        <img src="img/assets/bush2.png" class="bush2">
 
+        <h1 class="title">Parallax</h1>
+
+        <img src="img/assets/bush1.png" class="bush1">
+        <img src="img/assets/leaf2.png" class="leaf2">
+        <img src="img/assets/leaf1.png" class="leaf1">
+    </section>
     <!-- container -->
-    <main role="main" class="container starter-template">
-
-                <div id="notification" class="notification"></div>
-                <!-- where prompt / messages will appear -->
-                <div id="response"></div>
-                
-                <!-- where main content will appear-->
-                <div id="content"></div>
-                
-    </main>
+    <div id="maintop" class="catalog-background">
+        <main role="main" id="main" class="">
+            <div id="notification" class="notification"></div>
+            <!-- where prompt / messages will appear -->
+            <div id="response"></div>
+            
+            <!-- where main content will appear-->
+            <div id="content"></div>
+                    
+        </main>
+    </div>
     <!-- /container -->
     
     <!-- Модальное окно для редактирования профиля -->
@@ -266,7 +284,6 @@
         </div>
     </div>
     
-    
     <script>
         $(document).ready(function(){
             //Отображение главной страницы при входе на сайт 
@@ -279,6 +296,10 @@
             });
             // Функция для показа страницы авторизации
             function showAuthorizePage() {
+                $('.home').hide();
+                $('#maintop').removeClass('catalog-background');
+                $('#main').addClass('container');
+                $('#main').removeClass('starter-template');
                 $.get("Pages/authorize.html", function(html) {
                     $('#content').html(html);
                     clearResponse();
@@ -438,23 +459,46 @@
                 document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
             }
         
-            
-            // if the user is logged out
-            function showLoggedOutMenu(){
-                // show login and sign up from navbar & hide logout button
-                $("#authorize").show();
-                $("#logout, #profile_photo").hide();
+            function showLoggedOutMenu() {
+                var windowWidth = $(window).width();
+                
+                if (windowWidth > 800) {
+                    // Для десктопных экранов
+                    $(".auth-link").removeClass('hidden').addClass('visible');
+                    $(".auth-link-mobile").addClass('hidden');
+                } else {
+                    // Для мобильных экранов
+                    $(".auth-link-mobile").removeClass('hidden').addClass('visible');
+                    $(".auth-link").addClass('hidden');
+                }
+
+                // Скрываем кнопки выхода и профиля для всех версий
+                $(".logout-link, .logout-link-mobile, .profile-link, .profile-link-mobile").removeClass('visible').addClass('hidden');
             }
-            // if the user is logged in
-            function showLoggedInMenu(){
-                // hide login and sign up from navbar & show logout button
-                $("#authorize").hide();
-                $("#logout, #profile_photo").show();
+
+            function showLoggedInMenu() {
+                var windowWidth = $(window).width();
+                
+                if (windowWidth > 800) {
+                    // Для десктопных экранов
+                    $(".logout-link, .profile-link").removeClass('hidden').addClass('visible');
+                    $(".logout-link-mobile, .profile-link-mobile").addClass('hidden');
+                } else {
+                    // Для мобильных экранов
+                    $(".logout-link-mobile, .profile-link-mobile").removeClass('hidden').addClass('visible');
+                    $(".logout-link, .profile-link").addClass('hidden');
+                }
+
+                // Скрываем ссылку на авторизацию для всех версий
+                $(".auth-link, .auth-link-mobile").removeClass('visible').addClass('hidden');
             }
-        
             //<---------------------------------------------------------------------------------------Home Page--------------------------------------------------------------------------------------->
-            // show home page
+            
+            // Функция для отображения главной страницы
             function showHomePage(categoryId = '') {
+                $('.home').show();
+                $('#maintop').addClass('catalog-background');
+                $('#main').removeClass('container');
                 $('body').removeClass('bodywraper');
                 $('body').removeClass('specific-page');
                 var jwt = getCookie('jwt');
@@ -465,89 +509,108 @@
                     showLoggedInMenu();
             
                     if(user.role == 'admin') {
-                        var adminHtml = `<div class="col-12 mb-3">
+                        var adminHtml = `<div class="col-12 mb-3 starter-template2">
                                             <button type="button" class="btn btn-success" id="addProductBtn">Добавить товар</button>
                                             <button type="button" class="btn btn-success" id="addCategoryBtn">Добавить категорию</button>
                                             <button type="button" class="btn btn-danger" id="deleteCategoryBtn">Удалить категорию</button>
-                                          </div>`;
-                        $('#content').append(adminHtml);
+                                        </div>`;
+                        $('#adminActions').append(adminHtml);
                     }
                 })
                 .fail(function(result){
                     showLoggedOutMenu();
                 });
-            
-                $('#content').load('Pages/homepage.html', function() {    
-                        $('#filterForm').submit(function(e) {
-                            e.preventDefault();
-                            var selectedCategory = $('#categoryId').val();
-                            showHomePage(selectedCategory);
-                        });
-                        $.ajax({
-                            url: 'api/data/product/get_categories.php', // Путь к вашему серверному скрипту
-                            type: 'GET',
-                            success: function(categories) {
-                                // Очищаем текущие опции и добавляем "Все категории"
-                                var select = $('#categoryId');
-                                select.empty().append($('<option>', {
-                                    value: '',
-                                    text: 'Все категории'
-                                }));
+
+                // Загрузка содержимого главной страницы
+                $('#content').load('Pages/homepage.html', function() {
+                    // Получение и отображение категорий
+                    $('#content').append(`<section class="catalog"><h1>Catalog</h1><div class="card-container">`+ `</div></section>`);
+                    $.ajax({
+                        url: 'api/data/product/get_categories.php',
+                        type: 'GET',
+                        success: function(categories) {
+                            var select = $('#categoryId');
+                            select.empty().append($('<option>', {
+                                value: '',
+                                text: 'Все категории'
+                            }));
                     
-                                // Добавляем полученные категории в выпадающий список
-                                categories.forEach(function(category) {
-                                    select.append($('<option>', {
-                                        value: category.id,
-                                        text: category.name
-                                    }));
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Ошибка при получении категорий: ", error);
-                            }
-                        });
-                        
-                        getProducts(function(products) {
-                            var productTemplate = $('#productTemplate').html();
-                            var productsHtml = '';
-                            if (products && products.length > 0) {
-                                products.forEach(function(product) {
-                                    var adminButtons = generateAdminButtons(product.id, user ? user.role : ''); // Используем user.role, если user определена
-                                    
-                                    var productHtml = productTemplate
-                                        .replace(/%path_photo%/g, product.path_photo)
-                                        .replace(/%name%/g, product.name)
-                                        .replace(/%description%/g, product.description)
-                                        .replace(/%id%/g, product.id)
-                                        .replace(/%adminButtons%/g, adminButtons)
-                                        .replace(/%price%/g, product.price);
-                
-                                    productsHtml += productHtml;
-                                });
-                                $('#content').append('<div class="row">' + productsHtml + '</div>');
-                            } else {
-                                $('#content').append('<p>Товары не найдены.</p>');
-                            }
-                        }, categoryId);
+                            categories.forEach(function(category) {
+                                select.append($('<option>', {
+                                    value: category.id,
+                                    text: category.name
+                                }));
+                            });
+                            getProducts(updateProductList);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Ошибка при получении категорий: ", error);
+                        }
                     });
-            
+                });
             }
-            function generateAdminButtons(productId, userRole) {
-                if (userRole === 'admin') {
-                    return `<button type="button" class="btn btn-sm btn-outline-secondary edit-product-btn" data-product-id="${productId}">Edit</button>
-                            <button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-product-id="${productId}">Delete</button>`;
+
+            // // Обработчик события отправки формы фильтрации
+            $(document).on('submit', '#filterForm', function(e) {
+                e.preventDefault();
+                var selectedCategory = $('#categoryId').val();
+                getProducts(updateProductList, selectedCategory);
+            });
+            // Функция для обновления списка продуктов
+            function updateProductList(products) {
+                var productTemplate = $('#productTemplate').html();
+                var productsHtml = '';
+                if (products && products.length > 0) {
+                    products.forEach(function(product) {
+                        var adminButtons = '';
+                        var productHtml = productTemplate
+                            .replace(/%path_photo%/g, product.path_photo)
+                            .replace(/%name%/g, product.name)
+                            .replace(/%description%/g, product.description)
+                            .replace(/%id%/g, product.id)
+                            .replace(/%adminButtons%/g, adminButtons)
+                            .replace(/%price%/g, product.price);
+
+                        productsHtml += productHtml;
+                    });
+                    $('.card-container').html(productsHtml); // Обновляем только список продуктов
                 } else {
-                    return '';
+                    $('.card-container').html('<p>Товары не найдены.</p>'); // Показываем сообщение, если продукты не найдены
+                }
+                var jwt = getCookie('jwt');
+                if (jwt) {
+                    $.post("api/data/user/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+                        var user = result.data;
+                        showLoggedInMenu();
+
+                        if (user.role == 'admin') {
+                            // Теперь добавляем кнопки администратора к каждому товару
+                            $('.card').each(function() {
+                                var productId = $(this).find('.add-to-cart-btn').data('product-id');
+                                var adminButtons = generateAdminButtons(productId, user.role);
+                                $(this).find('.price-info').append(adminButtons);
+                                // Применяем стили к элементам <p> и <button> внутри .price-info
+                                $(this).find('.price-info p, .price-info button').css({
+                                    'height': 'auto',
+                                    'width': '100%'
+                                });
+                            });
+                        }
+                    })
+                    .fail(function(result){
+                        showLoggedOutMenu();
+                    });
                 }
             }
-            // Функция для получения товаров
+
+            // Функция для получения продуктов из API
             function getProducts(callback, categoryId = '') {
                 // Подготовка данных для запроса
                 var data = {};
                 if (categoryId) {
                     data.categoryId = categoryId; // Добавляем categoryId в данные запроса, если он задан
                 }
-            
+
                 $.ajax({
                     url: 'api/data/product/get_products.php', // Убедитесь, что адрес верный
                     type: 'GET',
@@ -562,7 +625,22 @@
                 });
             }
 
+          
             //adminButtons
+            function generateAdminButtons(productId, userRole) {
+                if (userRole === 'admin') {
+                    return `<style>
+                        .price-info {
+                            transform: translateY(90px);
+                            transition: 1s ease;
+                        }
+                        </style>
+                            <button type="button" class="edit-product-btn" data-product-id="${productId}">Edit</button>
+                            <button type="button" class="delete-product-btn" data-product-id="${productId}">Delete</button>`;
+                } else {
+                    return '';
+                }
+            }
             // Открытие модального окна категории
             $('body').on('click', '#addCategoryBtn', function() {
                 // Открытие модального окна
@@ -763,6 +841,9 @@
             //<---------------------------------------------------------------------------------------Korzina Page--------------------------------------------------------------------------------------->
             // show korzina page
             function showkorzinaPage() {
+                $('.home').hide();
+                $('#main').addClass('starter-template');
+                //$('#maintop').removeClass('catalog-background');
                 $('body').removeClass('bodywraper');
                 $('body').removeClass('specific-page');
                 // validate jwt to verify access
@@ -954,6 +1035,9 @@
 
             var globalUserData = null;
             function showUpdateAccountForm(){
+                $('.home').hide();
+                //$('#maintop').removeClass('catalog-background');
+                $('#main').addClass('starter-template');
                 $('body').removeClass('bodywraper');
                 $('body').removeClass('specific-page');
                 // validate jwt to verify access
