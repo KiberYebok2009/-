@@ -312,6 +312,7 @@ img{
 
 /* Стили для экранов шириной до 414px (например, iPhone 6/7/8 Plus) */
 @media screen and (max-width: 600px){
+
     .wrapper .info-text.login{
         padding: 0 40px 60px 20px;
     }
@@ -327,18 +328,62 @@ img{
     .wrapper .form-box.register{
         padding: 0 40px 0 40px;
     }
-
-    .wrapper .form-box.login{
-        padding: 0 40px 0 40px;
+    .wrapper {
+        width: 700px;
     }
 }
 
 @media screen and (max-width: 360px){
+
     .wrapper .form-box.register{
         padding: 0 40px 0 20px;
     }
 
     .wrapper .form-box.login{
         padding: 0 40px 0 40px;
+    }
+}
+
+@media screen and (max-width: 450px){
+
+    .wrapper .form-box.register{
+        padding: 0 40px 0 20px;
+    }
+
+    .wrapper .form-box.login{
+        padding: 0 20px 0 40px;
+    }
+
+    .wrapper {
+        width: 360px;
+    }
+}
+@media screen and (max-width: 800px) and (min-width: 450px){
+
+    .wrapper .info-text.login{
+        padding: 0 40px 40px 20px;
+    }
+
+    .wrapper .info-text.register{
+        padding: 0 50px 60px 40px;
+    }
+
+    .wrapper .form-box.login{
+        padding: 0 30px 0 40px;
+    }
+
+    .wrapper .form-box.register {
+        padding: 0 40px 0 10px;
+    }
+    
+    .wrapper {
+        width: 450px;
+    }
+}
+
+@media screen and (min-width: 1000px){
+
+    .wrapper {
+        width: 750px;
     }
 }
