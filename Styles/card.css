@@ -18,8 +18,8 @@
 
 .card:hover{
     scale: 1.1;
-    border: 2px solid yellow;
-    box-shadow: 0 0 25px gold;
+    border: 2px solid palevioletred;
+    box-shadow: 0 0 25px purple;
 }
 
 .card img{
