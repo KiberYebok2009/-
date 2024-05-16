@@ -51,20 +51,8 @@
 .catalog h1 {
     font-size: 40px;
     text-align: center;
+    margin-bottom: 50px;
 }
-
-/* @media(max-width: 800px){
-
-    .hideOnMobile{
-        display: none;
-    }
-
-    .menu-button{
-        display: block;
-    }
-
-} */
-
 
 html{
     scroll-behavior: smooth;
