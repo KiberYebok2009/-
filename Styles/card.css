@@ -92,3 +92,11 @@
 .card:hover .price-info{
     transform: translateY(0);
 }
+
+@media screen and (max-width: 376px){
+
+    .card img{
+        width: 100%;
+        height: 250px;
+    }
+}
