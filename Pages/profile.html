@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>Профиль пользователя</title>
+        <link href="../Styles/profile.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="mt-5">
+            <!-- Профиль пользователя -->
+            <div class="row">
+                <div class="col-lg-3 mb-3">
+                    <div class="card">
+                        <img id="current_photo" src="path_to_default_photo.jpg" alt="Profile Photo" class="card-img-top">
+                        <div class="card-body">
+                            <h5 id="username" class="card-title">Имя пользователя</h5>
+                            <p id="useremail" class="card-text">user@example.com</p>
+                            <button type="button" class="btn btn-primary btn-edit-profile" data-toggle="modal" data-target="#editProfileModal">
+                                Редактировать профиль
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <!-- Заказы пользователя -->
+                    <div id="orders-container"></div>
+                    <!-- Заказы для администратора -->
+                    <div id="admin-orders-container"></div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -1,29 +1,44 @@
-<div id="filter" class="mb-3">
-    <h4>Фильтр по категории</h4>
-    <form id="filterForm">
-        <div class="form-group">
-            <select class="form-control" id="categoryId" name="categoryId">
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Применить фильтр</button>
-    </form>
-</div>
-<script type="text/template" id="productTemplate">
-    <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-            <img src="%path_photo%" class="card-img-top" alt="%name%">
-            <div class="card-body">
-                <h5 class="card-title">%name%</h5>
-                <p class="card-text">%description%</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary view-product-btn" data-product-id="%id%">View</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary add-to-cart-btn" data-product-id="%id%">Корзину</button>
-                        %adminButtons%
-                    </div>
-                    <small class="text-muted">%price%</small>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Parallax Website</title>
+        <!-- <link rel="stylesheet" href="css/card.css?888"> -->
+</head>
+<body>
+
+    <section class="catalog">
+        <h1>Catalog</h1>
+        
+        <div class="row mt-3 mb-4 button-group filter-button-group">
+            <div class="col d-flex ">
+                <div class="inner-button-container">
+                    <button type="button" data-filter="*" class="btn btn-primary mx-1 text-dark filter-btn">All</button>
                 </div>
             </div>
         </div>
-    </div>
-</script>
+        
+        <div id="adminActions" class="mb-3"></div>
+        <div class="card-container"></div>
+    </section>
+    <script type="text/template" id="productTemplate">
+        <div class="card">
+            <img src="%path_photo%" alt="%name%">
+            <div class="card-content">
+                <div class="card-info">
+                    <p>%name%</p>
+                    <p class="collection">%description%</p>
+                </div>
+                
+                <div class="price-info">
+                    <p>%price%</p>
+                    <button type="button" class="add-to-cart-btn" data-product-id="%id%">В корзину</button>
+                    %adminButtons%
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- <script src="../js/mobile.js?2"></script> -->
+
+</body>
+</html>

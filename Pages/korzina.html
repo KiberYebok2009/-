@@ -1,24 +1,35 @@
-<table class="table" id="cart-table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col"></th>
-            <th scope="col">Фото</th>
-            <th scope="col">Название</th>
-            <th scope="col">Стоимость</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Товары в корзине будут добавлены здесь -->
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html>
 
-<div class="row">
-    <div class="col-12">
-        <button id="delete-selected-items" class="btn btn-danger">Удалить выбранные товары</button>
-    </div>
-    <div class="col-12 d-flex justify-content-end align-items-center">
-        <span class="mr-3" id="total-price">Итого: </span>
-        <button type="button" class="btn btn-primary float-right" id="checkoutBtn">Оформить заказ</button>
-    </div>
-</div>
+<head>
+   <title>Shopping Cart</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   
+</head>
+
+<body>
+
+    <section>
+        <div class="container">
+           <h2 class="px-5 p-2">My shopping cart</h2>
+           <div class="cart">
+              <div class="col-md-12 col-lg-10 mx-auto">
+                 <!-- Сюда будут добавляться элементы корзины динамически -->
+     
+                 <div class="row g-2">
+                    <div class="col-6">
+                       <h5>Total:</h5>
+                    </div>
+                    <div class="col-6 status">
+                       <h5 id="total-price">0.00</h5> <!-- Обновляемый итоговый блок -->
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </section>
+
+
+</body>
+</html>

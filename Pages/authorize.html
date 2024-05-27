@@ -1,64 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="js/registration.css?111">
+    <title>Аутентификация</title>
+    <link rel="icon" href="../img/Registration/amnyam.webp" type="image/webp">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
-    
-    <div class="containerr" id="containerr">
-        <div class="form-containerr sign-up">
-            <form id='sign_up_form' enctype="multipart/form-data">
-                <h1>Создать Аккаунт</h1>
-                <div class="social-icons">
-                    <a href="https://store.steampowered.com/login/?redir=&redir_ssl=1&snr=1_4_4__global-header" target="_blank" class="icon">
-                        <i class="fa-brands fa-steam"></i>
-                    </a>
+<body >
+    <div class="wrapper">
+        <span class="bg-animate"></span>
+        <span class="bg-animate2"></span>
+
+        <div class="form-box login">
+            <h2 class="animation" style="--i:0; --j:21;">Login</h2>
+            <form id='login_form'>
+                <div class="input-box animation" style="--i:1; --j:22;">
+                    <input type="email" id='email' name='email' required>
+                    <label>Email</label>
+                    <i class='bx bxl-gmail' ></i>
                 </div>
-                <span>Или использовать вашу почту для регистрации</span>
-                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Name" required />
-                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Фамилия" required />
-                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required />
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required />
+                <div class="input-box animation" style="--i:2; --j:23;">
+                    <input type="password" id='password' name='password' required>
+                    <label>Password</label>
+                    <i class='bx bxs-key'></i>
+                </div>
+                <button type="submit" class="butt animation" style="--i:3; --j:24;">Sign-in</button>
+                <div class="logreg-link animation" style="--i:4; --j:25;">
+                    <p>Don`t have an account? <a href="#" class="register-link">Sign-up</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="info-text login">
+            <h2 class="animation" style="--i:0; --j:20;">Welcome Back</h2>
+            <img src="../img/Registration/amnyam.webp" class="animation img_wrapper" style="--i:1; --j:21;">
+        </div>
+
+        <div class="form-box register" >
+            <h2 class="animation" style="--i:17; --j:0;">Register</h2>
+            <form id='sign_up_form' enctype="multipart/form-data">
+                <div class="input-box animation" style="--i:18; --j:1;">
+                    <input type="text" name="firstname" id="firstname" required>
+                    <label>FirstName</label>
+                    <i class='bx bx-user-pin' ></i>
+                </div>
+                <div class="input-box animation" style="--i:19; --j:2;">
+                    <input type="text" name="lastname" id="lastname" required>
+                    <label>LastName</label>       
+                    <i class='bx bx-user-pin' ></i>           
+                </div>
+                <div class="input-box animation" style="--i:20; --j:3;">
+                    <input type="email" name="email" id="email" required>
+                    <label>Email</label>
+                    <i class='bx bxl-gmail' ></i>
+                </div>
+                <div class="input-box animation" style="--i:21; --j:4;">
+                    <input type="password" name="password" id="password" required>
+                    <label>Password</label>
+                    <i class='bx bxs-key'></i>
+                </div>
                 
                 <input type="hidden" name="profile_photo" value="api/images/server/server-error.jpg" />
                 <input type="hidden" name="role" value="user" />
                 
-                <button>Sign Up</button>
+                <button type="submit" class="butt animation" style="--i:22; --j:5;">Sign-up</button>
+                <div class="logreg-link animation" style="--i:23; --j:6;">
+                    <p>Already have an account? <a href="#" class="login-link">Sign-in</a></p>
+                </div>
             </form>
         </div>
 
-        <div class="form-containerr sign-in">
-            <form id='login_form'>
-                <h1>Войти в Аккаунт</h1>
-                <div class="social-icons">
-                    <a href="https://store.steampowered.com/login/?redir=&redir_ssl=1&snr=1_4_4__global-header" target="_blank" class="icon">
-                        <i class="fa-brands fa-steam"></i>
-                    </a>
-                </div>
-                <span>Или использовать вашу почту для входа</span>
-                <input type='email' class='form-control' id='email' name='email' placeholder='Enter email'>
-                <input type='password' class='form-control' id='password' name='password' placeholder='Password'>
-                <a href="#">Забыли Пароль?</a>
-                <button type="submit">Sign In</button>
-            </form>
-        </div>
-        <div class="toggle-containerr">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>С Возвращением</h1>
-                    <p>Введите ваши личные данные для использования всех возможностей сайта</p>
-                    <button class="hidden" id="loginBtn">Sign In</button>
-                </div>
-
-                <div class="toggle-panel toggle-right">
-                    <h1>Добро Пожаловать</h1>
-                    <p>Зарегистрируйтесь с использованием ваших личных данных для использования всех возможностей сайта</p>
-                    <button class="hidden" id="registerBtn">Sign Up</button>
-                </div>
-            </div>
+        <div class="info-text register" >
+            <h2 class="animation" style="--i:17; --j:0;">Hello</h2>
+            <img src="../img/Registration/2.webp" class="animation img_wrapper" style="--i:18; --j:1;">
         </div>
     </div>
-    <script src="js/registration.js?11"></script>
+    <script src="js/script.js?1"></script>
+
 </body>
 </html>
