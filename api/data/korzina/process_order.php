@@ -36,7 +36,7 @@
         }
     
         // Создаем заказ с рассчитанной общей стоимостью и новыми данными
-        $query = "INSERT INTO orders (user_id, total, order_date, status, trade_link, payment_method) VALUES (:user_id, :total, NOW(), 'processing', :trade_link, :payment_method)";
+        $query = "INSERT INTO orders (user_id, total, order_date, status, trade_link, payment_method) VALUES (:user_id, :total, NOW(), 'Обработка', :trade_link, :payment_method)";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':total', $total);

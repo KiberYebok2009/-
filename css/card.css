@@ -18,8 +18,8 @@
 
 .card:hover{
     scale: 1.1;
-    border: 2px solid yellow;
-    box-shadow: 0 0 25px gold;
+    border: 2px solid palevioletred;
+    box-shadow: 0 0 25px purple;
 }
 
 .card img{
@@ -91,4 +91,122 @@
 
 .card:hover .price-info{
     transform: translateY(0);
+}
+
+.filter-button-group .col {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Для категорий*/
+.inner-button-container {
+    display: inline-flex; /* Используйте inline-flex, чтобы контейнер мог сжиматься по содержимому */
+    margin: 0 auto; /* Центрирование контейнера */
+}
+
+.filter-button-group .btn {
+    flex: 0 0 auto; /* Элементы не будут растягиваться или сжиматься */
+}
+/* Скрыть полосу прокрутки в веб-браузерах, использующих движок WebKit/Blink, например, Chrome, Safari, Opera */
+.filter-button-group .col::-webkit-scrollbar {
+    height: 0; /* Устанавливаем высоту полосы прокрутки равной 0 */
+}
+
+/* Скрыть полосу прокрутки в Firefox */
+.filter-button-group .col {
+    scrollbar-width: none; /* Скрыть полосу прокрутки */
+}
+
+/* Скрыть полосы прокрутки в IE и Edge */
+.filter-button-group .col {
+    -ms-overflow-style: none; /* Скрыть полосу прокрутки */
+}
+
+.SwiperCatalogMenuItem_image__x3OXo {
+    transform-origin: center top;
+    transition: transform 2s ease;
+}
+
+.filter-btn:hover .SwiperCatalogMenuItem_image__x3OXo,
+.filter-btn:active .SwiperCatalogMenuItem_image__x3OXo {
+    transform: scale(1.05);
+}
+/* Стили для кнопки при наведении */
+.filter-btn:hover .SwiperCatalogMenuItem_text__ybir9 {
+    transform: scale(1.1); /* Увеличение текста */
+    margin-top: 10px; /* Смещение текста вниз */
+    color: gold; /* Изменение цвета текста */
+}
+/* Добавляем плавность анимации к тексту */
+.SwiperCatalogMenuItem_text__ybir9 {
+    transition: transform 1s ease, margin-top 1s ease, color 1s ease;
+}
+.SwiperCatalogMenuItem_image__x3OXo {
+    transition: transform 2s ease, border 2s ease;
+}
+/* Стили для наведения */
+.SwiperCatalogMenuItem_image__x3OXo:hover {
+    transform: scale(1.05); /* Небольшое увеличение */
+    color: gold; /* Замените #newColor на желаемый цвет текста при наведении */
+    border: 2px solid gold; /* Добавляем золотистую обводку */
+}
+
+/* Стили для активного состояния (нажатия) */
+.SwiperCatalogMenuItem_image__x3OXo:active {
+    transform: scale(1.05); /* Небольшое увеличение */
+    color: gold; /* Замените #newColor на желаемый цвет текста при нажатии */
+    border: 2px solid gold; /* Добавляем золотистую обводку */
+}
+
+.btn-primaryZ{
+    background-color: transparent;
+    outline: none !important;
+}
+.SwiperCatalogMenuItem_image__x3OXo {
+    width: 100%;
+    object-fit: cover;
+    object-position: 60% 100%;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border: 2px solid palevioletred;
+}
+.SwiperCatalogMenuItem_container__PEYrk {
+    width: 270px;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0;
+    border: none;
+}
+/*p*/
+.mui-1bqbaz0 {
+    margin: 0px;
+    font-size: 12px;
+    font-weight: 400;
+    font-family: var(--font-montserrat);
+    line-height: 1.5;
+    color: red;
+}
+.SwiperCatalogMenuItem_text__ybir9 {
+    height: 50px;
+    margin: 0 auto;
+    vertical-align: middle;
+    font-size: 10px;
+    font-weight: 500;
+}
+.btn:active,
+.btn:focus {
+    box-shadow: none !important; /* Убирает тень вокруг кнопки */
+    border: none !important; /* Убирает границу */
+    outline: none !important;
+}
+
+@media screen and (max-width: 376px){ 
+ 
+    .card img{ 
+        width: 100%; 
+        height: 250px; 
+    } 
 }

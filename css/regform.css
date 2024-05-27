@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 
-
 .bodywraper{
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url(../img/Registration/solnishko.jpg);
+    background-image: url(../img/Registration/photo_5341786233925393272_w.jpg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin: 0;
@@ -31,9 +30,9 @@
     height: 450px;
     width: 750px;
     background: #081b29;
-    border: 2px solid #9951FF;
+    border: 2px solid palevioletred;
+    box-shadow: 0 0 25px purple;
     overflow: hidden;
-    box-shadow: 0 0 25px #E26EE5;
     margin: auto; /* Добавить автоматические отступы для центрирования */
 }
 
@@ -110,7 +109,7 @@
     height: 100%;
     background: transparent;
     border: none;
-    outline: none;
+    outline: 1px solid transparent;
     border-bottom: 2px solid #fff;
     padding-right: 23px;
     font-size: 16px;
@@ -121,7 +120,7 @@
 
 .input-box input:focus,
 .input-box input:valid{
-    border-bottom-color: #E26EE5;
+    border-bottom-color: palevioletred;
 }
 
 .input-box label{
@@ -138,7 +137,7 @@
 .input-box input:focus~label,
 .input-box input:valid~label{
     top: -5px;
-    color: #E26EE5;
+    color: palevioletred;
 }
 
 .input-box i{
@@ -153,7 +152,7 @@
 
 .input-box input:focus~i,
 .input-box input:valid~i{
-    color: #E26EE5;
+    color: palevioletred;
 }
 
 .butt{
@@ -161,8 +160,8 @@
     width: 100%;
     height: 45px;
     background: transparent;
-    border: 2px solid #9951FF;
-    box-shadow: 0 0 15px #E26EE5;
+    border: 2px solid palevioletred;
+    box-shadow: 0 0 25px purple;
     outline: none;
     border-radius: 40px;
     cursor: pointer;
@@ -181,7 +180,7 @@
     width: 100%;
     height: 300%;
     z-index: -1;
-    background: linear-gradient(#081b29, #9951FF, #081b29, #9951FF);
+    background: linear-gradient(#081b29, #3B3291, #081b29, #3B3291);
     transition: .5s;
 }
 
@@ -197,7 +196,8 @@
 }
 
 .logreg-link p a{
-    color: #9951FF;text-decoration: none;
+    color: palevioletred;
+    text-decoration: none;
     font-weight: 600;
 }
 
@@ -287,8 +287,9 @@
     right: 0;
     width: 850px;
     height: 600px;
-    background: linear-gradient(45deg, #081b29, #9951FF);
-    border-bottom: 3px solid #9951FF;
+    background: linear-gradient(45deg, #081b29, #3B3291);
+    border-bottom: 3px solid palevioletred;
+    box-shadow: 0 0 25px purple;
     transform: rotate(10deg) skewY(40deg);
     transform-origin: bottom right;
     transition: 1.5s ease;
@@ -307,7 +308,8 @@
     width: 850px;
     height: 700px;
     background: #081b29;
-    border-top: 3px solid #9951FF;
+    border-top: 3px solid palevioletred;
+    box-shadow: 0 0 25px purple;
     transform: rotate(0) skewY(0);
     transform-origin: bottom left;
     transition: 1.5s ease;
@@ -319,52 +321,74 @@
     transition-delay: 1.2s;
 }
 
-/* Стили для экранов шириной до 414px (например, iPhone 6/7/8 Plus) */
-@media screen and (max-width: 600px){
-    .wrapper .info-text.login{
-        padding: 0 40px 60px 20px;
-    }
+@media screen and (max-width: 600px){ 
+    .wrapper .info-text.login{ 
+        padding: 0 40px 60px 20px; 
+    } 
+ 
+    .wrapper .info-text.register{ 
+        padding: 0 50px 60px 40px; 
+    } 
+ 
+    .form-box .input-box{ 
+        height: 30px; 
+    } 
+ 
+    .wrapper .form-box.register{ 
+        padding: 0 40px 0 40px; 
+    } 
+    .wrapper { 
+        width: 700px; 
+    } 
+} 
+ 
+@media screen and (max-width: 360px){ 
+    .wrapper .form-box.register{ 
+        padding: 0 40px 0 20px; 
+    } 
+ 
+    .wrapper .form-box.login{ 
+        padding: 0 40px 0 40px; 
+    } 
+} 
+@media screen and (max-width: 450px){ 
+    .wrapper .form-box.register{ 
+        padding: 0 40px 0 20px; 
+    } 
+ 
+    .wrapper .form-box.login{ 
+        padding: 0 20px 0 40px; 
+    } 
+ 
+    .wrapper { 
+        width: 360px; 
+    } 
+} 
 
-    .wrapper .info-text.register{
-        padding: 0 50px 60px 40px;
-    }
-
-    .form-box .input-box{
-        height: 30px;
-    }
-
-    .wrapper .form-box.register{
-        padding: 0 40px 0 40px;
-    }
-    .wrapper {
-        width: 700px;
-    }
-}
-
-@media screen and (max-width: 360px){
-    .wrapper .form-box.register{
-        padding: 0 40px 0 20px;
-    }
-
-    .wrapper .form-box.login{
-        padding: 0 40px 0 40px;
-    }
-}
-@media screen and (max-width: 767px){
-    .wrapper .info-text.login{
-        padding: 0 40px 60px 20px;
-    }
-
-    .wrapper .info-text.register{
-        padding: 0 50px 60px 40px;
-    }
-    .wrapper {
-        width: 360px;
-    }
-}
-@media screen and (min-width: 1000px){
-
-    .wrapper {
-        width: 750px;
-    }
+@media screen and (max-width: 800px) and (min-width: 450px){ 
+    .wrapper .info-text.login{ 
+        padding: 0 40px 40px 20px; 
+    } 
+ 
+    .wrapper .info-text.register{ 
+        padding: 0 50px 60px 40px; 
+    } 
+ 
+    .wrapper .form-box.login{ 
+        padding: 0 30px 0 40px; 
+    } 
+ 
+    .wrapper .form-box.register { 
+        padding: 0 40px 0 10px; 
+    } 
+     
+    .wrapper { 
+        width: 450px; 
+    } 
+} 
+@media screen and (min-width: 1000px){ 
+ 
+    .wrapper { 
+        width: 750px; 
+    } 
 }

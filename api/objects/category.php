@@ -41,7 +41,7 @@
         }
         
         public function read() {
-            $query = "SELECT id, name FROM categories ORDER BY name";
+            $query = "SELECT id, name, img FROM categories ORDER BY name";
             
             $stmt = $this->conn->prepare($query);
             $stmt->execute();

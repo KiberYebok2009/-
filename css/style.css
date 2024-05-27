@@ -56,3 +56,7 @@ html::-webkit-scrollbar{
         padding: 20px;
     }
 }
+.prank {
+    position: relative; /* или absolute, в зависимости от вашего случая */
+    top: 20px; /* Сдвигает изображение вниз относительно его нормального положения */
+}
